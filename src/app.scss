@@ -4,73 +4,82 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    /* 安徽山水蓝 #4A90E2 -> HSL(210, 71%, 58%) */
+    --primary: 210 71% 58%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 210 71% 75%;
+    
+    /* 古徽州墨绿 #2E4B3F -> HSL(150, 23%, 24%) */
+    --secondary: 150 23% 24%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 150 23% 85%;
+    
+    /* 背景色 */
+    --background: 0 0% 98%;
+    --foreground: 210 10% 15%;
+    
+    /* 卡片 */
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 72.22% 50.59%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5% 64.9%;
+    --card-foreground: 210 10% 15%;
+    
+    /* 辅助色 */
+    --muted: 210 20% 95%;
+    --muted-foreground: 210 10% 40%;
+    
+    --accent: 210 71% 95%;
+    --accent-foreground: 210 71% 30%;
+    
+    /* 边框和输入框 */
+    --border: 210 20% 88%;
+    --input: 210 20% 95%;
+    --ring: 210 71% 58%;
+    
+    /* 其他 */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
     --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 240 5% 64.9%;
+    
+    /* 渐变 */
+    --gradient-primary: linear-gradient(135deg, hsl(210, 71%, 58%), hsl(210, 71%, 75%));
+    --gradient-secondary: linear-gradient(135deg, hsl(150, 23%, 24%), hsl(150, 23%, 35%));
+    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%), hsl(210, 20%, 98%));
+    --gradient-subtle: linear-gradient(180deg, hsl(210, 71%, 98%), hsl(0, 0%, 100%));
+    
+    /* 阴影 */
+    --shadow-elegant: 0 10px 30px -10px hsl(210 71% 58% / 0.2);
+    --shadow-card: 0 2px 8px hsl(210 20% 20% / 0.08);
   }
+}
 
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 240 4.9% 83.9%;
+@layer utilities {
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .bg-gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+  
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+  
+  .bg-gradient-subtle {
+    background: var(--gradient-subtle);
+  }
+  
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
   }
 }

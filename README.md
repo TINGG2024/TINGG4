@@ -1,55 +1,124 @@
-# Project Overview
+# 皖美 - 安徽介绍微信小程序
 
-This repository is a Taro + React + TypeScript starter project for WeChat Mini-Programs and mobile H5, styled with Tailwind CSS and managed via pnpm.
-This document explains how to set up your local environment, develop, test, lint, and build the project.
----
+展示安徽美好形象的微信小程序，全面介绍安徽的美食文化、自然风景、历史文化底蕴和经济发展水平。
 
-## Repository Structure
+## 项目特点
 
-The project structure is as follows:
+- 🎨 **精美设计**：采用安徽山水蓝（#4A90E2）和古徽州墨绿（#2E4B3F）配色方案，8px圆角设计
+- 🍜 **美食文化**：展示徽州毛豆腐、臭鳜鱼、黄山烧饼等安徽特色美食
+- 🏔️ **自然风景**：介绍黄山、宏村、九华山、天柱山等著名景点
+- 📚 **历史文化**：呈现徽文化、黄梅戏、宣纸、徽墨等文化瑰宝
+- 💼 **经济发展**：展示合肥科学中心、新能源汽车、集成电路、人工智能等产业成就
+- 👍 **用户互动**：支持点赞、收藏、评论功能
+- 📤 **社交分享**：支持分享到微信好友和朋友圈
+- 🔐 **无需登录**：使用UUID标识用户，无需注册登录
+
+## 技术栈
+
+- **框架**：Taro + React + TypeScript
+- **样式**：Tailwind CSS
+- **数据库**：Supabase
+- **包管理**：pnpm
+
+## 项目结构
 
 ```
-
-├── babel.config.js
-├── package.json
-├── pnpm-lock.yaml
-├── postcss.config.js
-├── project.config.json
-├── README.md
-├── tailwind.config.js
-├── tsconfig.check.json
-├── tsconfig.json
-├── config/
-│   ├── dev.ts
-│   ├── index.ts
-│   └── prod.ts
-├── scripts/
 ├── src/
-│   ├── app.config.ts               # Taro app configuration, defining routes and tabBar, Please note that the "pages" must correctly correspond to the routes defined in src/pages.
-│   ├── app.scss
-│   ├── app.ts
-│   ├── index.html
+│   ├── app.config.ts               # Taro应用配置（路由、TabBar）
+│   ├── app.scss                    # 全局样式和颜色系统
+│   ├── app.tsx                     # 应用入口
+│   ├── assets/
+│   │   └── images/                 # TabBar图标资源
 │   ├── client/
-│   │   └── supabase.ts             # Supabase client configuration, When you need to use Supabase, import and use it from this file.
-│   ├── db/                         # Database operations and Supabase integration, all database calls should be implemented here
-│   │   └── README.md
-│   ├── pages/                      # each folder corresponds to a route defined in app.config.ts
-│   │   └──home/
-│   ├── store/                      # Global state management using Zustand for cross-page state sharing
-│   │   └── README.md
-│   └── types/                      # TypeScript type definitions
-│       └── global.d.ts
+│   │   └── supabase.ts             # Supabase客户端配置
+│   ├── db/
+│   │   └── api.ts                  # 数据库操作接口
+│   ├── pages/
+│   │   ├── home/                   # 首页
+│   │   ├── food/                   # 美食文化页
+│   │   ├── scenery/                # 自然风景页
+│   │   ├── culture/                # 历史文化页
+│   │   ├── economy/                # 经济发展页（已移除TabBar，通过首页访问）
+│   │   ├── detail/                 # 内容详情页
+│   │   └── my/                     # 我的页面（收藏列表）
+│   ├── store/
+│   │   └── user.ts                 # 用户状态管理
+│   └── types/
+│       └── content.ts              # 类型定义
 └── supabase/
+    └── migrations/                 # 数据库迁移文件
 ```
 
-After you generate any files or update the structure of this project, please update the README.md file to reflect the changes.
+## 数据库设计
+
+### contents表 - 内容表
+存储所有展示内容（美食、风景、文化、经济）
+
+### likes表 - 点赞记录表
+记录用户点赞行为
+
+### favorites表 - 收藏记录表
+记录用户收藏行为
+
+### comments表 - 评论表
+存储用户评论内容
+
+## 功能模块
+
+### 1. 首页
+- 展示各模块入口（美食、风景、文化、经济）
+- 每个分类展示前3条内容预览
+- 快速导航到各分类页面
+
+### 2. 分类列表页
+- 美食文化：展示安徽特色美食
+- 自然风景：展示安徽著名景点
+- 历史文化：展示安徽文化瑰宝
+- 经济发展：展示安徽产业成就
+
+### 3. 内容详情页
+- 完整内容展示
+- 点赞功能
+- 收藏功能
+- 评论功能
+- 分享功能
+
+### 4. 我的页面
+- 用户信息展示
+- 修改昵称
+- 收藏列表
 
 ## Installation and Setup
 
 ```bash
-pnpm install # Install dependencies
+pnpm install # 安装依赖
 ```
 
 ```bash
-pnpm run lint  # Lint source (Important: After modifying the code, please execute this command to perform necessary checks.)
+pnpm run lint  # 代码检查
 ```
+
+## 开发说明
+
+### 环境变量
+项目使用`.env`文件管理配置：
+- `TARO_APP_SUPABASE_URL`：Supabase项目URL
+- `TARO_APP_SUPABASE_ANON_KEY`：Supabase匿名密钥
+- `TARO_APP_NAME`：应用名称
+- `TARO_APP_APP_ID`：应用ID
+
+### 颜色系统
+项目使用语义化颜色系统，定义在`src/app.scss`中：
+- `--primary`：安徽山水蓝（#4A90E2）
+- `--secondary`：古徽州墨绿（#2E4B3F）
+- 支持渐变效果和阴影效果
+
+### 用户标识
+使用本地存储的UUID标识用户，无需登录：
+- 首次访问自动生成UUID
+- 支持修改昵称
+- 昵称和UUID存储在本地
+
+## 版权信息
+
+© 2025 皖美

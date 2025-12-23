@@ -1,5 +1,5 @@
 export default definePageConfig({
-  navigationBarTitleText: '皖美 · 安徽',
+  navigationBarTitleText: '经济发展',
   enableShareAppMessage: true,
   enableShareTimeline: true
 })

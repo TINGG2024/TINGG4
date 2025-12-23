@@ -1,5 +1,5 @@
 export default definePageConfig({
-  navigationBarTitleText: '皖美 · 安徽',
+  navigationBarTitleText: '我的',
   enableShareAppMessage: true,
   enableShareTimeline: true
 })
