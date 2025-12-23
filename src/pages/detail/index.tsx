@@ -154,6 +154,11 @@ export default function Detail() {
     return date.toLocaleDateString('zh-CN')
   }
 
+  // 返回上一页
+  const handleBack = () => {
+    Taro.navigateBack()
+  }
+
   if (loading) {
     return (
       <View className="min-h-screen bg-background flex items-center justify-center">
@@ -175,12 +180,18 @@ export default function Detail() {
     <View className="min-h-screen bg-background pb-20">
       <ScrollView scrollY className="h-screen" style={{background: 'transparent'}}>
         {/* 图片 */}
-        <View className="w-full h-64">
+        <View className="w-full h-64 relative">
           <Image
             src={content.image_url || 'https://via.placeholder.com/800x600'}
             mode="aspectFill"
             className="w-full h-full"
           />
+          {/* 返回按钮 */}
+          <View
+            className="absolute top-4 left-4 w-10 h-10 bg-card bg-opacity-80 rounded-full flex items-center justify-center shadow-lg"
+            onClick={handleBack}>
+            <View className="i-mdi-arrow-left text-2xl text-foreground" />
+          </View>
         </View>
 
         {/* 内容详情 */}
