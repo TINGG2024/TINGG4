@@ -35,15 +35,22 @@ export default function Culture() {
   return (
     <View className="min-h-screen bg-background">
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
-        {/* 顶部介绍 */}
-        <View className="bg-gradient-primary px-6 py-8">
-          <View className="flex items-center mb-3">
-            <View className="i-mdi-book-open-page-variant text-5xl text-primary-foreground mr-3" />
-            <View>
-              <Text className="text-2xl font-bold text-primary-foreground block mb-1">历史文化</Text>
-              <Text className="text-sm text-primary-foreground opacity-90 block">感受文化底蕴 · 传承历史文明</Text>
+        {/* 徽派风格顶部 */}
+        <View className="culture-header-hui px-6 py-8">
+          {/* 内容层 */}
+          <View className="relative z-10">
+            <View className="flex items-center mb-4">
+              <View>
+                {/* 主标题 - 徽派书法体 */}
+                <Text className="hui-calligraphy-title text-3xl block mb-2">历史文化</Text>
+                {/* 副标题 - 浅灰色小字 */}
+                <Text className="text-xs text-huimo-light opacity-80 block">感受文化底蕴 · 传承历史文明</Text>
+              </View>
             </View>
           </View>
+
+          {/* 徽派回纹装饰线 */}
+          <View className="hui-pattern-line mt-4" />
         </View>
 
         {/* 内容列表 */}

@@ -35,15 +35,22 @@ export default function Scenery() {
   return (
     <View className="min-h-screen bg-background">
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
-        {/* 顶部介绍 */}
-        <View className="bg-gradient-secondary px-6 py-8">
-          <View className="flex items-center mb-3">
-            <View className="i-mdi-image-filter-hdr text-5xl text-secondary-foreground mr-3" />
-            <View>
-              <Text className="text-2xl font-bold text-secondary-foreground block mb-1">自然风景</Text>
-              <Text className="text-sm text-secondary-foreground opacity-90 block">领略山水之美 · 感受自然魅力</Text>
+        {/* 徽派风格顶部 */}
+        <View className="scenery-header-hui px-6 py-8">
+          {/* 内容层 */}
+          <View className="relative z-10">
+            <View className="flex items-center mb-4">
+              <View>
+                {/* 主标题 - 徽派书法体 */}
+                <Text className="hui-calligraphy-title text-3xl block mb-2">自然风景</Text>
+                {/* 副标题 - 浅灰色小字 */}
+                <Text className="text-xs text-huimo-light opacity-80 block">领略山水之美 · 感受自然魅力</Text>
+              </View>
             </View>
           </View>
+
+          {/* 徽派回纹装饰线 */}
+          <View className="hui-pattern-line mt-4" />
         </View>
 
         {/* 内容列表 */}
