@@ -147,17 +147,41 @@
     transform: scale(0.98);
   }
   
-  /* 分类选中态圆环 */
-  .category-ring {
-    position: relative;
+  /* 徽派窗棂式分类按钮 */
+  .hui-window-btn {
+    width: 80px;
+    height: 90px;
+    background-color: hsl(var(--hui-gray));
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
   
-  .category-ring::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
+  .hui-window-btn:active {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 选中态 */
+  .hui-window-btn-active {
     border: 2px solid hsl(var(--hui-red));
-    border-radius: 50%;
+    background: linear-gradient(180deg, hsl(var(--hui-gray)), rgba(230, 57, 70, 0.05));
+  }
+  
+  .hui-window-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+  }
+  
+  .hui-window-text {
+    font-size: 12px;
+    font-weight: 500;
   }
 }
 

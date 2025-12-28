@@ -10,17 +10,17 @@ const CATEGORIES = [
   {
     key: 'scenery',
     name: '自然风景',
-    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_a1f8aeed-7034-411d-ba61-bbf37b937d7a.jpg'
+    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_386482ad-ee10-4256-940b-5e875d14d293.jpg'
   },
   {
     key: 'culture',
     name: '历史文化',
-    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_d78e9c7e-6e04-4058-beb5-541dab3d48b7.jpg'
+    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_b1049c66-19e9-45a3-91a6-e3ecb59a8f90.jpg'
   },
   {
     key: 'food',
     name: '徽菜美食',
-    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_be72addc-fc99-41c9-8a98-c0e36b5e6edb.jpg'
+    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_16db797b-c079-4e49-9a32-282ddcde9e46.jpg'
   }
 ]
 
@@ -34,7 +34,7 @@ const SPECIAL_IMAGES = [
 export default function Home() {
   const [contents, setContents] = useState<Content[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedCategory, setSelectedCategory] = useState(0)
+  const [selectedCategory, setSelectedCategory] = useState('food') // 改为字符串类型，默认美食
   const [specialImageIndex, setSpecialImageIndex] = useState(0)
   const initUser = useUserStore((state) => state.initUser)
 
@@ -121,33 +121,27 @@ export default function Home() {
           </View>
         </View>
 
-        {/* 2. 横向滑动分类导航栏（80px高度） */}
-        <View className="bg-card" style={{height: '80px'}}>
-          <ScrollView scrollX className="h-full" style={{whiteSpace: 'nowrap'}}>
-            <View className="flex items-center h-full px-4">
-              {CATEGORIES.map((cat, index) => (
-                <View
-                  key={index}
-                  className="inline-flex flex-col items-center justify-center mx-3"
-                  onClick={() => {
-                    setSelectedCategory(index)
-                    navigateToCategory(cat.key)
-                  }}>
-                  {/* 圆形图标 */}
-                  <View className={`relative ${selectedCategory === index ? 'category-ring' : ''}`}>
-                    <View className="w-12 h-12 rounded-full overflow-hidden bg-hui-gray">
-                      <Image src={cat.icon} mode="aspectFill" className="w-full h-full" />
-                    </View>
-                  </View>
-                  {/* 文字 */}
-                  <Text
-                    className={`text-xs mt-1 ${selectedCategory === index ? 'text-hui-red font-bold' : 'text-huimo-light'}`}>
-                    {cat.name}
-                  </Text>
-                </View>
-              ))}
-            </View>
-          </ScrollView>
+        {/* 2. 横向滑动分类导航栏（徽派窗棂式按钮） */}
+        <View className="bg-card py-4">
+          <View className="flex items-center justify-center px-4">
+            {CATEGORIES.map((cat, index) => (
+              <View
+                key={index}
+                className={`hui-window-btn ${selectedCategory === cat.key ? 'hui-window-btn-active' : ''}`}
+                style={{marginLeft: index === 0 ? 0 : '10px'}}
+                onClick={() => {
+                  setSelectedCategory(cat.key)
+                  navigateToCategory(cat.key)
+                }}>
+                {/* 图标 */}
+                <Image src={cat.icon} mode="aspectFit" className="hui-window-icon" />
+                {/* 文字 */}
+                <Text className={`hui-window-text ${selectedCategory === cat.key ? 'text-hui-red' : 'text-huimo'}`}>
+                  {cat.name}
+                </Text>
+              </View>
+            ))}
+          </View>
         </View>
 
         {/* 3. 核心推荐区（双列卡片布局） */}
@@ -387,29 +381,7 @@ export default function Home() {
 
         {/* 5. 底部轻量推荐区 */}
         <View className="px-4 pb-6">
-          <View className="flex justify-between">
-            <View
-              className="w-[31%] bg-hui-gray rounded-xl p-4 flex flex-col items-center justify-center card-scale"
-              style={{aspectRatio: '1'}}
-              onClick={() => navigateToCategory('scenery')}>
-              <View className="i-mdi-map-marker-star text-3xl text-hui-red mb-2" />
-              <Text className="text-xs text-huimo font-semibold">热门打卡地</Text>
-            </View>
-            <View
-              className="w-[31%] bg-hui-gray rounded-xl p-4 flex flex-col items-center justify-center card-scale"
-              style={{aspectRatio: '1'}}
-              onClick={() => navigateToCategory('food')}>
-              <View className="i-mdi-fire text-3xl text-hui-red mb-2" />
-              <Text className="text-xs text-huimo font-semibold">新晋网红点</Text>
-            </View>
-            <View
-              className="w-[31%] bg-hui-gray rounded-xl p-4 flex flex-col items-center justify-center card-scale"
-              style={{aspectRatio: '1'}}
-              onClick={() => navigateToCategory('culture')}>
-              <View className="i-mdi-book-open-variant text-3xl text-hui-red mb-2" />
-              <Text className="text-xs text-huimo font-semibold">文旅攻略</Text>
-            </View>
-          </View>
+          <View className="flex justify-between"></View>
         </View>
 
         {loading && (
