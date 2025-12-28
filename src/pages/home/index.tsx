@@ -8,6 +8,11 @@ import type {Content} from '@/types/content'
 // 分类配置 - 安徽特色图标
 const CATEGORIES = [
   {
+    key: 'food',
+    name: '徽菜美食',
+    icon: 'https://miaoda-image.cdn.bcebos.com/img/corpus/235fe99f283c4b3eb4014f6e6d9e7c5a.jpg' // 徽菜美食
+  },
+  {
     key: 'scenery',
     name: '自然风景',
     icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_6231976e-1a42-431f-a9ae-c609db47144a.jpg' // 黄山迎客松
@@ -16,11 +21,6 @@ const CATEGORIES = [
     key: 'culture',
     name: '历史文化',
     icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_ae49543e-b595-45d7-831e-7b485d0f8a10.jpg' // 徽派马头墙
-  },
-  {
-    key: 'food',
-    name: '徽菜美食',
-    icon: 'https://miaoda-image.cdn.bcebos.com/img/corpus/235fe99f283c4b3eb4014f6e6d9e7c5a.jpg' // 徽菜美食
   }
 ]
 
