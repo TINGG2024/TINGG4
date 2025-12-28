@@ -32,11 +32,21 @@ export default function Economy() {
     Taro.navigateTo({url: `/pages/detail/index?id=${id}`})
   }
 
+  const handleBack = () => {
+    Taro.navigateBack()
+  }
+
   return (
     <View className="min-h-screen bg-background">
       <ScrollView scrollY className="h-screen" style={{background: 'transparent'}}>
         {/* 顶部介绍 */}
-        <View className="bg-gradient-secondary px-6 py-8">
+        <View className="bg-gradient-secondary px-6 py-8 relative">
+          {/* 返回按钮 */}
+          <View
+            className="absolute top-4 left-4 w-10 h-10 bg-card bg-opacity-80 rounded-full flex items-center justify-center shadow-lg"
+            onClick={handleBack}>
+            <View className="i-mdi-arrow-left text-2xl text-foreground" />
+          </View>
           <View className="flex items-center mb-3">
             <View className="i-mdi-chart-line text-5xl text-secondary-foreground mr-3" />
             <View>
