@@ -147,7 +147,7 @@
     transform: scale(0.98);
   }
   
-  /* 安徽特色图标按钮 */
+  /* 徽派印章风格图标按钮 */
   .anhui-icon-btn {
     width: 80px;
     display: flex;
@@ -162,15 +162,19 @@
   }
   
   .anhui-icon-image {
-    width: 64px;
-    height: 64px;
+    width: 70px;
+    height: 70px;
     margin-bottom: 6px;
     transition: all 0.3s ease;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
   
-  /* 选中态 */
+  /* 选中态 - 印章红色发光效果 */
   .anhui-icon-btn-active .anhui-icon-image {
-    filter: drop-shadow(0 2px 8px rgba(230, 57, 70, 0.4));
+    filter: drop-shadow(0 3px 10px rgba(230, 57, 70, 0.5));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.15);
   }
   
   .anhui-icon-text {
