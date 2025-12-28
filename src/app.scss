@@ -179,34 +179,23 @@
   /* 美食页面徽派风格顶部 */
   .food-header-hui {
     position: relative;
-    background: linear-gradient(135deg, hsl(var(--hui-gray)) 0%, rgba(241, 250, 238, 0.8) 100%);
+    background-image: url('https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_821ee37d-01d6-4246-9f8c-07d5dfa9e2c1.jpg');
+    background-size: cover;
+    background-position: center;
     overflow: hidden;
   }
   
-  /* 水墨晕染效果 */
-  .food-header-hui::before {
+  /* 半透明遮罩层，确保文字清晰可读 */
+  .food-header-hui::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, rgba(230, 57, 70, 0.12) 0%, rgba(230, 57, 70, 0.03) 60%, transparent 100%);
+    background: rgba(255, 255, 255, 0.75);
     pointer-events: none;
-  }
-  
-  /* 窗棂纹理 */
-  .food-header-texture {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_72e80003-9439-4c8e-ae53-30b39603064e.jpg');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.08;
-    pointer-events: none;
+    z-index: 1;
   }
   
   /* 徽派回纹装饰线 */
