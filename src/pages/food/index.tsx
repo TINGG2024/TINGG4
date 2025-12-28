@@ -35,15 +35,32 @@ export default function Food() {
   return (
     <View className="min-h-screen bg-background">
       <ScrollView scrollY className="h-screen" style={{background: 'transparent'}}>
-        {/* 顶部介绍 */}
-        <View className="bg-gradient-primary px-6 py-8">
-          <View className="flex items-center mb-3">
-            <View className="i-mdi-food text-5xl text-primary-foreground mr-3" />
-            <View>
-              <Text className="text-2xl font-bold text-primary-foreground block mb-1">美食文化</Text>
-              <Text className="text-sm text-primary-foreground opacity-90 block">品味徽州美食 · 传承饮食文化</Text>
+        {/* 徽派风格顶部 */}
+        <View className="food-header-hui px-6 py-8">
+          {/* 窗棂纹理层 */}
+          <View className="food-header-texture" />
+
+          {/* 内容层 */}
+          <View className="relative z-10">
+            <View className="flex items-center mb-4">
+              {/* 徽菜餐具图标 */}
+              <Image
+                src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_fd9d8227-1f32-4c5b-977a-a4eafc3607a4.jpg"
+                mode="aspectFit"
+                className="w-14 h-14 mr-3"
+                style={{borderRadius: '8px'}}
+              />
+              <View>
+                {/* 主标题 - 徽派书法体 */}
+                <Text className="hui-calligraphy-title text-3xl block mb-2">美食文化</Text>
+                {/* 副标题 - 浅灰色小字 */}
+                <Text className="text-xs text-huimo-light opacity-80 block">品味徽州美食 · 传承饮食文化</Text>
+              </View>
             </View>
           </View>
+
+          {/* 徽派回纹装饰线 */}
+          <View className="hui-pattern-line mt-4" />
         </View>
 
         {/* 内容列表 */}
