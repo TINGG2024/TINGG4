@@ -34,7 +34,6 @@ const SPECIAL_IMAGES = [
 export default function Home() {
   const [contents, setContents] = useState<Content[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedCategory, setSelectedCategory] = useState('food') // 改为字符串类型，默认美食
   const [specialImageIndex, setSpecialImageIndex] = useState(0)
   const initUser = useUserStore((state) => state.initUser)
 
@@ -127,18 +126,13 @@ export default function Home() {
             {CATEGORIES.map((cat, index) => (
               <View
                 key={index}
-                className={`anhui-icon-btn ${selectedCategory === cat.key ? 'anhui-icon-btn-active' : ''}`}
+                className="anhui-icon-btn"
                 style={{marginLeft: index === 0 ? 0 : '20px'}}
-                onClick={() => {
-                  setSelectedCategory(cat.key)
-                  navigateToCategory(cat.key)
-                }}>
+                onClick={() => navigateToCategory(cat.key)}>
                 {/* 安徽特色图标 */}
                 <Image src={cat.icon} mode="aspectFit" className="anhui-icon-image" />
                 {/* 文字 */}
-                <Text className={`anhui-icon-text ${selectedCategory === cat.key ? 'text-hui-red' : 'text-huimo'}`}>
-                  {cat.name}
-                </Text>
+                <Text className="anhui-icon-text text-huimo">{cat.name}</Text>
               </View>
             ))}
           </View>
