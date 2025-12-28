@@ -5,22 +5,22 @@ import {getAllContents} from '@/db/api'
 import {useUserStore} from '@/store/user'
 import type {Content} from '@/types/content'
 
-// 分类配置
+// 分类配置 - 安徽特色图标
 const CATEGORIES = [
   {
     key: 'scenery',
     name: '自然风景',
-    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_386482ad-ee10-4256-940b-5e875d14d293.jpg'
+    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_6231976e-1a42-431f-a9ae-c609db47144a.jpg' // 黄山迎客松
   },
   {
     key: 'culture',
     name: '历史文化',
-    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_b1049c66-19e9-45a3-91a6-e3ecb59a8f90.jpg'
+    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_ae49543e-b595-45d7-831e-7b485d0f8a10.jpg' // 徽派马头墙
   },
   {
     key: 'food',
     name: '徽菜美食',
-    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_16db797b-c079-4e49-9a32-282ddcde9e46.jpg'
+    icon: 'https://miaoda-image.cdn.bcebos.com/img/corpus/235fe99f283c4b3eb4014f6e6d9e7c5a.jpg' // 徽菜美食
   }
 ]
 
@@ -121,22 +121,22 @@ export default function Home() {
           </View>
         </View>
 
-        {/* 2. 横向滑动分类导航栏（徽派窗棂式按钮） */}
-        <View className="bg-card py-4">
+        {/* 2. 安徽特色图标分类导航 */}
+        <View className="bg-card py-5">
           <View className="flex items-center justify-center px-4">
             {CATEGORIES.map((cat, index) => (
               <View
                 key={index}
-                className={`hui-window-btn ${selectedCategory === cat.key ? 'hui-window-btn-active' : ''}`}
-                style={{marginLeft: index === 0 ? 0 : '10px'}}
+                className={`anhui-icon-btn ${selectedCategory === cat.key ? 'anhui-icon-btn-active' : ''}`}
+                style={{marginLeft: index === 0 ? 0 : '20px'}}
                 onClick={() => {
                   setSelectedCategory(cat.key)
                   navigateToCategory(cat.key)
                 }}>
-                {/* 图标 */}
-                <Image src={cat.icon} mode="aspectFit" className="hui-window-icon" />
+                {/* 安徽特色图标 */}
+                <Image src={cat.icon} mode="aspectFit" className="anhui-icon-image" />
                 {/* 文字 */}
-                <Text className={`hui-window-text ${selectedCategory === cat.key ? 'text-hui-red' : 'text-huimo'}`}>
+                <Text className={`anhui-icon-text ${selectedCategory === cat.key ? 'text-hui-red' : 'text-huimo'}`}>
                   {cat.name}
                 </Text>
               </View>

@@ -147,41 +147,36 @@
     transform: scale(0.98);
   }
   
-  /* 徽派窗棂式分类按钮 */
-  .hui-window-btn {
+  /* 安徽特色图标按钮 */
+  .anhui-icon-btn {
     width: 80px;
-    height: 90px;
-    background-color: hsl(var(--hui-gray));
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
   
-  .hui-window-btn:active {
+  .anhui-icon-btn:active {
     transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .anhui-icon-image {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 6px;
+    transition: all 0.3s ease;
   }
   
   /* 选中态 */
-  .hui-window-btn-active {
-    border: 2px solid hsl(var(--hui-red));
-    background: linear-gradient(180deg, hsl(var(--hui-gray)), rgba(230, 57, 70, 0.05));
+  .anhui-icon-btn-active .anhui-icon-image {
+    filter: drop-shadow(0 2px 8px rgba(230, 57, 70, 0.4));
   }
   
-  .hui-window-icon {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 8px;
-  }
-  
-  .hui-window-text {
+  .anhui-icon-text {
     font-size: 12px;
     font-weight: 500;
+    transition: all 0.3s ease;
   }
 }
 
