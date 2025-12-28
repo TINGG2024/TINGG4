@@ -34,7 +34,7 @@ export default function Food() {
 
   return (
     <View className="min-h-screen bg-background">
-      <ScrollView scrollY className="h-screen" style={{background: 'transparent'}}>
+      <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         {/* 徽派风格顶部 */}
         <View className="food-header-hui px-6 py-8">
           {/* 内容层 */}

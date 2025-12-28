@@ -96,7 +96,7 @@ export default function Home() {
 
   return (
     <View className="min-h-screen bg-background">
-      <ScrollView scrollY className="h-screen" style={{background: 'transparent'}}>
+      <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         {/* 1. 顶部沉浸式通栏Banner（40%屏幕高度） */}
         <View className="relative" style={{height: '40vh'}}>
           {/* 背景图 */}

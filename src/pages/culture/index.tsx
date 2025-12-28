@@ -34,7 +34,7 @@ export default function Culture() {
 
   return (
     <View className="min-h-screen bg-background">
-      <ScrollView scrollY className="h-screen" style={{background: 'transparent'}}>
+      <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         {/* 顶部介绍 */}
         <View className="bg-gradient-primary px-6 py-8">
           <View className="flex items-center mb-3">

@@ -64,7 +64,7 @@ export default function My() {
 
   return (
     <View className="min-h-screen bg-background">
-      <ScrollView scrollY className="h-screen" style={{background: 'transparent'}}>
+      <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         {/* 用户信息卡片 */}
         <View className="bg-gradient-primary px-6 pt-8 pb-12">
           <View className="flex items-center">
