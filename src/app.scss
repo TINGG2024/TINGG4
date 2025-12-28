@@ -4,19 +4,26 @@
 
 @layer base {
   :root {
-    /* 安徽山水蓝 #4A90E2 -> HSL(210, 71%, 58%) */
-    --primary: 210 71% 58%;
+    /* 徽派红 #E63946 -> HSL(355, 78%, 57%) */
+    --primary: 355 78% 57%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 210 71% 75%;
+    --primary-glow: 355 78% 70%;
     
-    /* 古徽州墨绿 #2E4B3F -> HSL(150, 23%, 24%) */
-    --secondary: 150 23% 24%;
+    /* 皖蓝 #1D3557 -> HSL(211, 50%, 23%) */
+    --secondary: 211 50% 23%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-light: 150 23% 85%;
+    --secondary-light: 211 50% 85%;
+    
+    /* 徽派配色 */
+    --hui-red: 355 78% 57%;         /* 徽派红 #E63946 */
+    --wan-blue: 211 50% 23%;        /* 皖蓝 #1D3557 */
+    --hui-gray: 60 29% 97%;         /* 徽墨灰 #F1FAEE */
+    --huimo: 0 0% 20%;              /* 徽墨色 */
+    --huimo-light: 0 0% 45%;        /* 浅徽墨 */
     
     /* 背景色 */
-    --background: 0 0% 98%;
-    --foreground: 210 10% 15%;
+    --background: 60 29% 97%;
+    --foreground: 211 50% 15%;
     
     /* 卡片 */
     --card: 0 0% 100%;
@@ -40,14 +47,17 @@
     --radius: 0.5rem;
     
     /* 渐变 */
-    --gradient-primary: linear-gradient(135deg, hsl(210, 71%, 58%), hsl(210, 71%, 75%));
-    --gradient-secondary: linear-gradient(135deg, hsl(150, 23%, 24%), hsl(150, 23%, 35%));
-    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%), hsl(210, 20%, 98%));
-    --gradient-subtle: linear-gradient(180deg, hsl(210, 71%, 98%), hsl(0, 0%, 100%));
+    --gradient-primary: linear-gradient(135deg, hsl(355, 78%, 57%), hsl(355, 78%, 70%));
+    --gradient-secondary: linear-gradient(135deg, hsl(211, 50%, 23%), hsl(211, 50%, 35%));
+    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%), hsl(60, 29%, 98%));
+    --gradient-subtle: linear-gradient(180deg, hsl(60, 29%, 98%), hsl(0, 0%, 100%));
+    --gradient-huimo: linear-gradient(135deg, hsl(0, 0%, 25%), hsl(0, 0%, 35%));
     
     /* 阴影 */
-    --shadow-elegant: 0 10px 30px -10px hsl(210 71% 58% / 0.2);
-    --shadow-card: 0 2px 8px hsl(210 20% 20% / 0.08);
+    --shadow-elegant: 0 10px 30px -10px hsl(355 78% 57% / 0.2);
+    --shadow-card: 0 2px 8px hsl(211 50% 20% / 0.08);
+    --shadow-float: 0 2px 6px rgba(0, 0, 0, 0.08);
+    --shadow-float-hover: 0 4px 8px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -75,6 +85,10 @@
     background: var(--gradient-subtle);
   }
   
+  .bg-gradient-huimo {
+    background: var(--gradient-huimo);
+  }
+  
   .shadow-elegant {
     box-shadow: var(--shadow-elegant);
   }
@@ -82,4 +96,68 @@
   .shadow-card {
     box-shadow: var(--shadow-card);
   }
+  
+  .shadow-float {
+    box-shadow: var(--shadow-float);
+  }
+  
+  .shadow-float-hover {
+    box-shadow: var(--shadow-float-hover);
+  }
+  
+  /* 徽派配色背景 */
+  .bg-hui-red {
+    background-color: hsl(var(--hui-red));
+  }
+  
+  .bg-wan-blue {
+    background-color: hsl(var(--wan-blue));
+  }
+  
+  .bg-hui-gray {
+    background-color: hsl(var(--hui-gray));
+  }
+  
+  .bg-huimo {
+    background-color: hsl(var(--huimo));
+  }
+  
+  .text-hui-red {
+    color: hsl(var(--hui-red));
+  }
+  
+  .text-wan-blue {
+    color: hsl(var(--wan-blue));
+  }
+  
+  .text-huimo {
+    color: hsl(var(--huimo));
+  }
+  
+  .text-huimo-light {
+    color: hsl(var(--huimo-light));
+  }
+  
+  /* 卡片点击缩放动效 */
+  .card-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card-scale:active {
+    transform: scale(0.98);
+  }
+  
+  /* 分类选中态圆环 */
+  .category-ring {
+    position: relative;
+  }
+  
+  .category-ring::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 2px solid hsl(var(--hui-red));
+    border-radius: 50%;
+  }
 }
+

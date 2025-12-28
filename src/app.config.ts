@@ -51,8 +51,8 @@ export default defineAppConfig({
   },
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#4A90E2',
-    navigationBarTitleText: '皖美',
+    navigationBarBackgroundColor: '#1D3557',
+    navigationBarTitleText: '皖美视界',
     navigationBarTextStyle: 'white'
   }
 })
