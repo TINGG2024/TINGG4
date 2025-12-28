@@ -9,28 +9,18 @@ import type {Content} from '@/types/content'
 const CATEGORIES = [
   {
     key: 'scenery',
-    name: '黄山风光',
+    name: '自然风景',
     icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_a1f8aeed-7034-411d-ba61-bbf37b937d7a.jpg'
   },
   {
     key: 'culture',
-    name: '徽派建筑',
+    name: '历史文化',
     icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_d78e9c7e-6e04-4058-beb5-541dab3d48b7.jpg'
   },
   {
     key: 'food',
     name: '徽菜美食',
     icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_be72addc-fc99-41c9-8a98-c0e36b5e6edb.jpg'
-  },
-  {
-    key: 'economy',
-    name: '非遗民俗',
-    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_7993f92a-b3c9-4a4e-97dd-d701bf3c6852.jpg'
-  },
-  {
-    key: 'culture',
-    name: '皖北风情',
-    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_f3075433-3e36-4f4b-a8af-f5ef94040458.jpg'
   }
 ]
 
@@ -96,15 +86,14 @@ export default function Home() {
 
   // 跳转到分类页面
   const navigateToCategory = (category: string) => {
-    if (category === 'economy') {
-      Taro.navigateTo({url: `/pages/${category}/index`})
-    } else {
-      Taro.switchTab({url: `/pages/${category}/index`})
-    }
+    Taro.switchTab({url: `/pages/${category}/index`})
   }
 
-  // 获取推荐内容（前8个）
-  const recommendedContents = contents.slice(0, 8)
+  // 按分类分组内容
+  const foodContents = contents.filter((c) => c.category === 'food')
+  const sceneryContents = contents.filter((c) => c.category === 'scenery')
+  const cultureContents = contents.filter((c) => c.category === 'culture')
+  const economyContents = contents.filter((c) => c.category === 'economy')
 
   return (
     <View className="min-h-screen bg-background">
@@ -163,46 +152,198 @@ export default function Home() {
 
         {/* 3. 核心推荐区（双列卡片布局） */}
         <View className="px-4 py-5">
-          <View className="flex items-center justify-between mb-4">
-            <Text className="text-lg font-bold text-huimo">精选推荐</Text>
-            <Text className="text-xs text-huimo-light">为你精选安徽之美</Text>
-          </View>
-          <View className="flex flex-wrap justify-between">
-            {recommendedContents.map((content) => (
-              <View
-                key={content.id}
-                className="w-[48%] mb-3 bg-card rounded-xl shadow-card overflow-hidden card-scale"
-                onClick={() => navigateToDetail(content.id)}>
-                {/* 3:2比例图片 */}
-                <View className="w-full" style={{paddingTop: '66.67%', position: 'relative'}}>
-                  <Image
-                    src={content.image_url || 'https://via.placeholder.com/300x200'}
-                    mode="aspectFill"
-                    className="absolute inset-0 w-full h-full"
-                  />
-                </View>
-                {/* 文字区 */}
-                <View className="p-3">
-                  <Text className="text-sm font-bold text-foreground block mb-1 break-keep line-clamp-1">
-                    {content.title}
-                  </Text>
-                  <Text className="text-xs text-muted-foreground block mb-2 line-clamp-2" style={{lineHeight: '1.5'}}>
-                    {content.description.slice(0, 30)}...
-                  </Text>
-                  <View className="flex items-center justify-between">
-                    <View className="flex items-center text-xs text-muted-foreground">
-                      <View className="i-mdi-thumb-up-outline text-sm mr-1" />
-                      <Text>{content.likes_count}</Text>
-                    </View>
-                    <View className="flex items-center text-xs text-hui-red">
-                      <Text className="mr-1">查看详情</Text>
-                      <View className="i-mdi-chevron-right text-sm" />
-                    </View>
-                  </View>
+          {/* 美食文化 */}
+          {foodContents.length > 0 && (
+            <View className="mb-6">
+              <View className="flex items-center justify-between mb-4">
+                <Text className="text-lg font-bold text-huimo">徽菜美食</Text>
+                <View className="flex items-center text-xs text-hui-red" onClick={() => navigateToCategory('food')}>
+                  <Text className="mr-1">查看更多</Text>
+                  <View className="i-mdi-chevron-right text-sm" />
                 </View>
               </View>
-            ))}
-          </View>
+              <View className="flex flex-wrap justify-between">
+                {foodContents.map((content) => (
+                  <View
+                    key={content.id}
+                    className="w-[48%] mb-3 bg-card rounded-xl shadow-card overflow-hidden card-scale"
+                    onClick={() => navigateToDetail(content.id)}>
+                    <View className="w-full" style={{paddingTop: '66.67%', position: 'relative'}}>
+                      <Image
+                        src={content.image_url || 'https://via.placeholder.com/300x200'}
+                        mode="aspectFill"
+                        className="absolute inset-0 w-full h-full"
+                      />
+                    </View>
+                    <View className="p-3">
+                      <Text className="text-sm font-bold text-foreground block mb-1 break-keep line-clamp-1">
+                        {content.title}
+                      </Text>
+                      <Text
+                        className="text-xs text-muted-foreground block mb-2 line-clamp-2"
+                        style={{lineHeight: '1.5'}}>
+                        {content.description.slice(0, 30)}...
+                      </Text>
+                      <View className="flex items-center justify-between">
+                        <View className="flex items-center text-xs text-muted-foreground">
+                          <View className="i-mdi-thumb-up-outline text-sm mr-1" />
+                          <Text>{content.likes_count}</Text>
+                        </View>
+                        <View className="flex items-center text-xs text-hui-red">
+                          <Text className="mr-1">查看详情</Text>
+                          <View className="i-mdi-chevron-right text-sm" />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* 自然风景 */}
+          {sceneryContents.length > 0 && (
+            <View className="mb-6">
+              <View className="flex items-center justify-between mb-4">
+                <Text className="text-lg font-bold text-huimo">自然风景</Text>
+                <View className="flex items-center text-xs text-hui-red" onClick={() => navigateToCategory('scenery')}>
+                  <Text className="mr-1">查看更多</Text>
+                  <View className="i-mdi-chevron-right text-sm" />
+                </View>
+              </View>
+              <View className="flex flex-wrap justify-between">
+                {sceneryContents.map((content) => (
+                  <View
+                    key={content.id}
+                    className="w-[48%] mb-3 bg-card rounded-xl shadow-card overflow-hidden card-scale"
+                    onClick={() => navigateToDetail(content.id)}>
+                    <View className="w-full" style={{paddingTop: '66.67%', position: 'relative'}}>
+                      <Image
+                        src={content.image_url || 'https://via.placeholder.com/300x200'}
+                        mode="aspectFill"
+                        className="absolute inset-0 w-full h-full"
+                      />
+                    </View>
+                    <View className="p-3">
+                      <Text className="text-sm font-bold text-foreground block mb-1 break-keep line-clamp-1">
+                        {content.title}
+                      </Text>
+                      <Text
+                        className="text-xs text-muted-foreground block mb-2 line-clamp-2"
+                        style={{lineHeight: '1.5'}}>
+                        {content.description.slice(0, 30)}...
+                      </Text>
+                      <View className="flex items-center justify-between">
+                        <View className="flex items-center text-xs text-muted-foreground">
+                          <View className="i-mdi-thumb-up-outline text-sm mr-1" />
+                          <Text>{content.likes_count}</Text>
+                        </View>
+                        <View className="flex items-center text-xs text-hui-red">
+                          <Text className="mr-1">查看详情</Text>
+                          <View className="i-mdi-chevron-right text-sm" />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* 历史文化 */}
+          {cultureContents.length > 0 && (
+            <View className="mb-6">
+              <View className="flex items-center justify-between mb-4">
+                <Text className="text-lg font-bold text-huimo">历史文化</Text>
+                <View className="flex items-center text-xs text-hui-red" onClick={() => navigateToCategory('culture')}>
+                  <Text className="mr-1">查看更多</Text>
+                  <View className="i-mdi-chevron-right text-sm" />
+                </View>
+              </View>
+              <View className="flex flex-wrap justify-between">
+                {cultureContents.map((content) => (
+                  <View
+                    key={content.id}
+                    className="w-[48%] mb-3 bg-card rounded-xl shadow-card overflow-hidden card-scale"
+                    onClick={() => navigateToDetail(content.id)}>
+                    <View className="w-full" style={{paddingTop: '66.67%', position: 'relative'}}>
+                      <Image
+                        src={content.image_url || 'https://via.placeholder.com/300x200'}
+                        mode="aspectFill"
+                        className="absolute inset-0 w-full h-full"
+                      />
+                    </View>
+                    <View className="p-3">
+                      <Text className="text-sm font-bold text-foreground block mb-1 break-keep line-clamp-1">
+                        {content.title}
+                      </Text>
+                      <Text
+                        className="text-xs text-muted-foreground block mb-2 line-clamp-2"
+                        style={{lineHeight: '1.5'}}>
+                        {content.description.slice(0, 30)}...
+                      </Text>
+                      <View className="flex items-center justify-between">
+                        <View className="flex items-center text-xs text-muted-foreground">
+                          <View className="i-mdi-thumb-up-outline text-sm mr-1" />
+                          <Text>{content.likes_count}</Text>
+                        </View>
+                        <View className="flex items-center text-xs text-hui-red">
+                          <Text className="mr-1">查看详情</Text>
+                          <View className="i-mdi-chevron-right text-sm" />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* 经济发展 */}
+          {economyContents.length > 0 && (
+            <View className="mb-6">
+              <View className="flex items-center justify-between mb-4">
+                <Text className="text-lg font-bold text-huimo">经济发展</Text>
+                <Text className="text-xs text-huimo-light">见证发展成就</Text>
+              </View>
+              <View className="flex flex-wrap justify-between">
+                {economyContents.map((content) => (
+                  <View
+                    key={content.id}
+                    className="w-[48%] mb-3 bg-card rounded-xl shadow-card overflow-hidden card-scale"
+                    onClick={() => navigateToDetail(content.id)}>
+                    <View className="w-full" style={{paddingTop: '66.67%', position: 'relative'}}>
+                      <Image
+                        src={content.image_url || 'https://via.placeholder.com/300x200'}
+                        mode="aspectFill"
+                        className="absolute inset-0 w-full h-full"
+                      />
+                    </View>
+                    <View className="p-3">
+                      <Text className="text-sm font-bold text-foreground block mb-1 break-keep line-clamp-1">
+                        {content.title}
+                      </Text>
+                      <Text
+                        className="text-xs text-muted-foreground block mb-2 line-clamp-2"
+                        style={{lineHeight: '1.5'}}>
+                        {content.description.slice(0, 30)}...
+                      </Text>
+                      <View className="flex items-center justify-between">
+                        <View className="flex items-center text-xs text-muted-foreground">
+                          <View className="i-mdi-thumb-up-outline text-sm mr-1" />
+                          <Text>{content.likes_count}</Text>
+                        </View>
+                        <View className="flex items-center text-xs text-hui-red">
+                          <Text className="mr-1">查看详情</Text>
+                          <View className="i-mdi-chevron-right text-sm" />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
         </View>
 
         {/* 4. 地域专题区（通栏模块） */}
