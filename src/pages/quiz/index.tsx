@@ -1,5 +1,5 @@
 import {Button, Image, ScrollView, Text, View} from '@tarojs/components'
-import Taro, {useShareAppMessage, useShareTimeline} from '@tarojs/taro'
+import Taro, {useDidShow, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
 import {useState} from 'react'
 
 // 题库配置
@@ -9,45 +9,248 @@ interface QuizQuestion {
   options: string[]
   correctAnswer: number // 正确答案的索引（0-based）
   explanation: string
+  category: 'architecture' | 'food' | 'culture' // 题目分类
 }
 
+// 20道徽派文化题库
 const QUIZ_QUESTIONS: QuizQuestion[] = [
+  // 建筑类题目（7道）
   {
     id: 1,
     question: '马头墙最初的主要作用是？',
     options: ['A. 美观', 'B. 防火', 'C. 防盗'],
     correctAnswer: 1,
-    explanation: '马头墙又称防火墙，是徽派建筑的防火设计，可以有效阻止火势蔓延。'
+    explanation: '马头墙又称防火墙，是徽派建筑的防火设计，可以有效阻止火势蔓延。',
+    category: 'architecture'
   },
   {
     id: 2,
-    question: '臭鳜鱼的传统腌制时间约为？',
-    options: ['A. 1天', 'B. 7天', 'C. 15天'],
-    correctAnswer: 1,
-    explanation: '臭鳜鱼需要腌制约7天，让鱼肉发酵产生独特的臭味，这是徽菜的经典做法。'
-  },
-  {
-    id: 3,
-    question: '黄梅戏的发源地是安徽哪个城市？',
-    options: ['A. 安庆', 'B. 黄山', 'C. 合肥'],
-    correctAnswer: 0,
-    explanation: '黄梅戏发源于安庆市，是中国五大戏曲剧种之一，被誉为"中国的乡村音乐剧"。'
-  },
-  {
-    id: 4,
     question: '徽州三雕指的是哪三种雕刻工艺？',
     options: ['A. 木雕、石雕、砖雕', 'B. 木雕、玉雕、竹雕', 'C. 石雕、铜雕、泥雕'],
     correctAnswer: 0,
-    explanation: '徽州三雕是指木雕、石雕、砖雕，是徽派建筑装饰的重要组成部分，工艺精湛。'
+    explanation: '徽州三雕是指木雕、石雕、砖雕，是徽派建筑装饰的重要组成部分，工艺精湛。',
+    category: 'architecture'
+  },
+  {
+    id: 3,
+    question: '徽派建筑的典型特征"三间两厢"中的"厢"指的是？',
+    options: ['A. 厢房', 'B. 走廊', 'C. 天井'],
+    correctAnswer: 0,
+    explanation: '徽派建筑"三间两厢"指正房三间，两侧各有一间厢房，形成对称布局。',
+    category: 'architecture'
+  },
+  {
+    id: 4,
+    question: '徽派建筑中的"天井"主要作用是？',
+    options: ['A. 采光通风', 'B. 种植花草', 'C. 储存雨水'],
+    correctAnswer: 0,
+    explanation: '天井是徽派建筑的核心空间，主要用于采光、通风和排水，体现"四水归堂"的理念。',
+    category: 'architecture'
   },
   {
     id: 5,
-    question: '黄山四绝中不包括以下哪一项？',
-    options: ['A. 奇松', 'B. 怪石', 'C. 飞瀑'],
+    question: '宏村被誉为"中国画里的乡村"，其水系设计灵感来源于？',
+    options: ['A. 牛形', 'B. 龙形', 'C. 凤形'],
+    correctAnswer: 0,
+    explanation: '宏村水系按照牛的形态设计，月沼为牛胃，南湖为牛肚，水圳为牛肠，体现了徽州人的智慧。',
+    category: 'architecture'
+  },
+  {
+    id: 6,
+    question: '徽派建筑的门楼上常见的"八字门"寓意是？',
+    options: ['A. 招财进宝', 'B. 开门迎客', 'C. 福寿双全'],
+    correctAnswer: 1,
+    explanation: '八字门向外敞开，寓意开门迎客、广纳四方来客，体现徽商的开放胸怀。',
+    category: 'architecture'
+  },
+  {
+    id: 7,
+    question: '西递村的标志性建筑"胡文光刺史牌坊"建于哪个朝代？',
+    options: ['A. 明朝', 'B. 清朝', 'C. 宋朝'],
+    correctAnswer: 0,
+    explanation: '胡文光刺史牌坊建于明朝万历年间，是徽州石雕艺术的代表作。',
+    category: 'architecture'
+  },
+
+  // 美食类题目（7道）
+  {
+    id: 8,
+    question: '臭鳜鱼的传统腌制时间约为？',
+    options: ['A. 1天', 'B. 7天', 'C. 15天'],
+    correctAnswer: 1,
+    explanation: '臭鳜鱼需要腌制约7天，让鱼肉发酵产生独特的臭味，这是徽菜的经典做法。',
+    category: 'food'
+  },
+  {
+    id: 9,
+    question: '徽菜"毛豆腐"的制作关键是？',
+    options: ['A. 发酵长毛', 'B. 油炸金黄', 'C. 蒸煮软烂'],
+    correctAnswer: 0,
+    explanation: '毛豆腐的制作关键是让豆腐表面长出白色绒毛（霉菌），再经过煎炸，形成独特风味。',
+    category: 'food'
+  },
+  {
+    id: 10,
+    question: '徽菜"一品锅"的名称来源于？',
+    options: ['A. 官职品级', 'B. 食材品质', 'C. 烹饪工艺'],
+    correctAnswer: 0,
+    explanation: '一品锅因其分层摆放食材，寓意官居一品而得名，是徽州传统宴席名菜。',
+    category: 'food'
+  },
+  {
+    id: 11,
+    question: '徽州传统糕点"黄山烧饼"的特点是？',
+    options: ['A. 外酥里嫩', 'B. 香甜软糯', 'C. 酥脆爽口'],
+    correctAnswer: 0,
+    explanation: '黄山烧饼外皮酥脆，内馅鲜美，是徽州传统小吃的代表。',
+    category: 'food'
+  },
+  {
+    id: 12,
+    question: '徽菜"刀板香"的主要食材是？',
+    options: ['A. 腊肉', 'B. 咸鱼', 'C. 豆腐干'],
+    correctAnswer: 0,
+    explanation: '刀板香是用腊肉在木板上烤制而成，肉香四溢，是徽州传统美食。',
+    category: 'food'
+  },
+  {
+    id: 13,
+    question: '徽州传统饮品"黄山毛峰"属于哪类茶？',
+    options: ['A. 绿茶', 'B. 红茶', 'C. 乌龙茶'],
+    correctAnswer: 0,
+    explanation: '黄山毛峰是中国十大名茶之一，属于绿茶类，以其鲜爽回甘著称。',
+    category: 'food'
+  },
+  {
+    id: 14,
+    question: '徽菜"问政山笋"的名称来源于？',
+    options: ['A. 产地山名', 'B. 烹饪方法', 'C. 历史典故'],
+    correctAnswer: 0,
+    explanation: '问政山笋产自黄山问政山，笋质鲜嫩，是徽菜中的珍品。',
+    category: 'food'
+  },
+
+  // 民俗文化类题目（6道）
+  {
+    id: 15,
+    question: '黄梅戏的发源地是安徽哪个城市？',
+    options: ['A. 安庆', 'B. 黄山', 'C. 合肥'],
+    correctAnswer: 0,
+    explanation: '黄梅戏发源于安庆市，是中国五大戏曲剧种之一，被誉为"中国的乡村音乐剧"。',
+    category: 'culture'
+  },
+  {
+    id: 16,
+    question: '徽州传统节日"晒秋"通常在哪个季节举行？',
+    options: ['A. 春季', 'B. 夏季', 'C. 秋季'],
     correctAnswer: 2,
-    explanation: '黄山四绝是指奇松、怪石、云海、温泉，飞瀑虽然也是黄山的特色，但不在四绝之列。'
+    explanation: '晒秋是徽州传统民俗，每年秋季村民将收获的农作物晾晒在屋顶、晒场，形成独特景观。',
+    category: 'culture'
+  },
+  {
+    id: 17,
+    question: '徽州传统婚俗中，新娘出嫁时要跨过什么？',
+    options: ['A. 火盆', 'B. 门槛', 'C. 红毯'],
+    correctAnswer: 0,
+    explanation: '徽州传统婚俗中，新娘出嫁时要跨火盆，寓意驱邪避灾、红红火火。',
+    category: 'culture'
+  },
+  {
+    id: 18,
+    question: '徽州传统戏曲"徽剧"是哪个剧种的前身？',
+    options: ['A. 京剧', 'B. 越剧', 'C. 黄梅戏'],
+    correctAnswer: 0,
+    explanation: '徽剧是京剧的重要源流之一，徽班进京后与其他剧种融合，逐渐形成京剧。',
+    category: 'culture'
+  },
+  {
+    id: 19,
+    question: '徽州传统手工艺"徽墨"的主要原料是？',
+    options: ['A. 松烟', 'B. 煤炭', 'C. 木炭'],
+    correctAnswer: 0,
+    explanation: '徽墨以松烟为主要原料，配以动物胶等材料制成，是中国四大名墨之首。',
+    category: 'culture'
+  },
+  {
+    id: 20,
+    question: '徽州传统民居中的"商"字门寓意是？',
+    options: ['A. 经商致富', 'B. 高尚品德', 'C. 商议大事'],
+    correctAnswer: 0,
+    explanation: '徽州民居中的"商"字门体现了徽商文化，寓意经商致富、生意兴隆。',
+    category: 'culture'
   }
 ]
+
+// 随机抽题算法：确保建筑、美食、民俗各至少1道
+function getRandomQuestions(): QuizQuestion[] {
+  const architectureQuestions = QUIZ_QUESTIONS.filter((q) => q.category === 'architecture')
+  const foodQuestions = QUIZ_QUESTIONS.filter((q) => q.category === 'food')
+  const cultureQuestions = QUIZ_QUESTIONS.filter((q) => q.category === 'culture')
+
+  // 从每个分类中随机抽取至少1道
+  const selectedQuestions: QuizQuestion[] = []
+
+  // 随机抽取1道建筑题
+  const randomArchitecture = architectureQuestions[Math.floor(Math.random() * architectureQuestions.length)]
+  selectedQuestions.push(randomArchitecture)
+
+  // 随机抽取1道美食题
+  const randomFood = foodQuestions[Math.floor(Math.random() * foodQuestions.length)]
+  selectedQuestions.push(randomFood)
+
+  // 随机抽取1道民俗题
+  const randomCulture = cultureQuestions[Math.floor(Math.random() * cultureQuestions.length)]
+  selectedQuestions.push(randomCulture)
+
+  // 从剩余题目中随机抽取2道
+  const remainingQuestions = QUIZ_QUESTIONS.filter((q) => !selectedQuestions.find((sq) => sq.id === q.id))
+
+  for (let i = 0; i < 2; i++) {
+    if (remainingQuestions.length > 0) {
+      const randomIndex = Math.floor(Math.random() * remainingQuestions.length)
+      selectedQuestions.push(remainingQuestions[randomIndex])
+      remainingQuestions.splice(randomIndex, 1)
+    }
+  }
+
+  // 打乱顺序
+  return selectedQuestions.sort(() => Math.random() - 0.5)
+}
+
+// 每日答题次数管理
+interface DailyQuizRecord {
+  date: string // 日期（YYYY-MM-DD）
+  count: number // 当日答题次数
+}
+
+function getTodayDate(): string {
+  const today = new Date()
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+}
+
+function getDailyQuizCount(): number {
+  const record: DailyQuizRecord = Taro.getStorageSync('dailyQuizRecord') || {date: '', count: 0}
+  const today = getTodayDate()
+
+  // 如果日期不是今天，重置次数
+  if (record.date !== today) {
+    return 0
+  }
+
+  return record.count
+}
+
+function incrementDailyQuizCount(): void {
+  const today = getTodayDate()
+  const record: DailyQuizRecord = Taro.getStorageSync('dailyQuizRecord') || {date: '', count: 0}
+
+  // 如果日期不是今天，重置次数
+  if (record.date !== today) {
+    Taro.setStorageSync('dailyQuizRecord', {date: today, count: 1})
+  } else {
+    Taro.setStorageSync('dailyQuizRecord', {date: today, count: record.count + 1})
+  }
+}
 
 export default function Quiz() {
   const [showQuizModal, setShowQuizModal] = useState(false)
@@ -55,8 +258,16 @@ export default function Quiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [showFeedback, setShowFeedback] = useState(false)
   const [correctCount, setCorrectCount] = useState(0)
-  const [answeredQuestions, setAnsweredQuestions] = useState<number[]>([])
+  const [_answeredQuestions, setAnsweredQuestions] = useState<number[]>([])
   const [showResult, setShowResult] = useState(false)
+  const [currentQuestions, setCurrentQuestions] = useState<QuizQuestion[]>([])
+  const [dailyQuizCount, setDailyQuizCount] = useState(0)
+
+  // 页面显示时刷新答题次数
+  useDidShow(() => {
+    const count = getDailyQuizCount()
+    setDailyQuizCount(count)
+  })
 
   // 分享配置
   useShareAppMessage(() => ({
@@ -70,6 +281,20 @@ export default function Quiz() {
 
   // 开始答题
   const handleStartQuiz = () => {
+    // 检查答题次数
+    if (dailyQuizCount >= 3) {
+      Taro.showToast({
+        title: '今日答题次数已用完，明天再来吧',
+        icon: 'none',
+        duration: 2000
+      })
+      return
+    }
+
+    // 随机抽取5道题
+    const randomQuestions = getRandomQuestions()
+    setCurrentQuestions(randomQuestions)
+
     setShowQuizModal(true)
     setCurrentQuestionIndex(0)
     setSelectedAnswer(null)
@@ -86,7 +311,7 @@ export default function Quiz() {
     setSelectedAnswer(answerIndex)
     setShowFeedback(true)
 
-    const currentQuestion = QUIZ_QUESTIONS[currentQuestionIndex]
+    const currentQuestion = currentQuestions[currentQuestionIndex]
     const isCorrect = answerIndex === currentQuestion.correctAnswer
 
     if (isCorrect) {
@@ -97,7 +322,7 @@ export default function Quiz() {
 
     // 2秒后自动跳转到下一题或显示结果
     setTimeout(() => {
-      if (currentQuestionIndex < QUIZ_QUESTIONS.length - 1) {
+      if (currentQuestionIndex < currentQuestions.length - 1) {
         // 跳转到下一题
         setCurrentQuestionIndex((prev) => prev + 1)
         setSelectedAnswer(null)
@@ -105,28 +330,33 @@ export default function Quiz() {
       } else {
         // 显示最终结果
         setShowResult(true)
+
+        // 消耗1次答题机会
+        incrementDailyQuizCount()
+        setDailyQuizCount((prev) => prev + 1)
+
         // 保存答题记录到本地缓存
+        const finalCorrectCount = isCorrect ? correctCount + 1 : correctCount
         const quizRecord = {
           date: new Date().toISOString(),
-          correctCount: isCorrect ? correctCount + 1 : correctCount,
-          totalCount: QUIZ_QUESTIONS.length
+          correctCount: finalCorrectCount,
+          totalCount: currentQuestions.length
         }
         const records = Taro.getStorageSync('quizRecords') || []
         records.push(quizRecord)
         Taro.setStorageSync('quizRecords', records)
 
-        // 如果答对4题及以上，奖励印章
-        if (quizRecord.correctCount >= 4) {
+        // 如果答对4题及以上（正确率≥80%），奖励印章
+        if (finalCorrectCount >= 4) {
           const badges = Taro.getStorageSync('badges') || []
-          if (!badges.includes('徽文化达人')) {
-            badges.push('徽文化达人')
-            Taro.setStorageSync('badges', badges)
-            Taro.showToast({
-              title: '获得"徽文化达人"印章！',
-              icon: 'success',
-              duration: 2000
-            })
-          }
+          // 每次答对都添加一枚印章（每日最多3枚）
+          badges.push('徽文化达人')
+          Taro.setStorageSync('badges', badges)
+          Taro.showToast({
+            title: '获得"徽文化达人"印章！',
+            icon: 'success',
+            duration: 2000
+          })
         }
       }
     }, 2000)
@@ -140,6 +370,21 @@ export default function Quiz() {
 
   // 重新答题
   const handleRetry = () => {
+    // 检查答题次数
+    if (dailyQuizCount >= 3) {
+      Taro.showToast({
+        title: '今日答题次数已用完，明天再来吧',
+        icon: 'none',
+        duration: 2000
+      })
+      handleCloseModal()
+      return
+    }
+
+    // 随机抽取新的5道题
+    const randomQuestions = getRandomQuestions()
+    setCurrentQuestions(randomQuestions)
+
     setShowResult(false)
     setCurrentQuestionIndex(0)
     setSelectedAnswer(null)
@@ -148,8 +393,9 @@ export default function Quiz() {
     setAnsweredQuestions([])
   }
 
-  const currentQuestion = QUIZ_QUESTIONS[currentQuestionIndex]
+  const currentQuestion = currentQuestions[currentQuestionIndex]
   const isCorrect = selectedAnswer === currentQuestion?.correctAnswer
+  const remainingCount = 3 - dailyQuizCount
 
   return (
     <View className="min-h-screen bg-background">
@@ -192,7 +438,7 @@ export default function Quiz() {
                     <View className="flex-1">
                       <Text className="text-sm text-huimo font-bold block mb-1">题目范围</Text>
                       <Text className="text-xs text-muted-foreground">
-                        共5道题，涵盖徽菜美食、徽派建筑、徽州民俗等安徽特色文化
+                        每次随机抽取5道题，涵盖徽菜美食、徽派建筑、徽州民俗等安徽特色文化
                       </Text>
                     </View>
                   </View>
@@ -202,28 +448,36 @@ export default function Quiz() {
                     <View className="flex-1">
                       <Text className="text-sm text-huimo font-bold block mb-1">奖励机制</Text>
                       <Text className="text-xs text-muted-foreground">
-                        答对4题及以上可获得"徽文化达人"印章，保存到个人中心
+                        答对4题及以上（正确率≥80%）可获得"徽文化达人"印章，每日最多3枚
                       </Text>
                     </View>
                   </View>
 
                   <View className="flex items-start">
-                    <View className="i-mdi-lightbulb-on text-xl text-hui-red mr-2 mt-0.5" />
+                    <View className="i-mdi-calendar-clock text-xl text-hui-red mr-2 mt-0.5" />
                     <View className="flex-1">
-                      <Text className="text-sm text-huimo font-bold block mb-1">答题提示</Text>
-                      <Text className="text-xs text-muted-foreground">
-                        每题答完后会显示正确答案和详细解析，帮助你了解更多
-                      </Text>
+                      <Text className="text-sm text-huimo font-bold block mb-1">答题次数</Text>
+                      <Text className="text-xs text-muted-foreground">每人每天最多3次答题机会，每日0点自动重置</Text>
                     </View>
                   </View>
                 </View>
 
+                {/* 今日剩余次数提示 */}
+                <View className="flex items-center justify-center mb-4">
+                  <Text className="text-sm text-muted-foreground">今日剩余次数：</Text>
+                  <Text className="text-xl font-bold text-hui-red mx-1">{remainingCount}</Text>
+                  <Text className="text-sm text-muted-foreground">/3</Text>
+                </View>
+
                 {/* 开始答题按钮 */}
                 <Button
-                  className="w-full bg-hui-red text-white py-4 rounded-xl break-keep text-base font-bold"
+                  className={`w-full py-4 rounded-xl break-keep text-base font-bold ${
+                    dailyQuizCount >= 3 ? 'bg-muted text-muted-foreground opacity-50' : 'bg-hui-red text-white'
+                  }`}
                   size="default"
-                  onClick={handleStartQuiz}>
-                  开始答题
+                  onClick={handleStartQuiz}
+                  disabled={dailyQuizCount >= 3}>
+                  {dailyQuizCount >= 3 ? '今日次数已用完' : '开始答题'}
                 </Button>
               </View>
 
@@ -264,25 +518,43 @@ export default function Quiz() {
                 </View>
               </View>
 
-              {/* 题目预览卡片 */}
+              {/* 题库说明卡片 */}
               <View className="bg-card rounded-2xl p-6 mb-6">
                 <View className="flex items-center justify-between mb-4">
-                  <Text className="text-base font-bold text-huimo">题目预览</Text>
-                  <View className="i-mdi-format-list-numbered text-xl text-hui-red" />
+                  <Text className="text-base font-bold text-huimo">题库说明</Text>
+                  <View className="i-mdi-database text-xl text-hui-red" />
                 </View>
 
                 <View className="space-y-3">
-                  {QUIZ_QUESTIONS.map((q, index) => (
-                    <View key={q.id} className="bg-hui-gray rounded-xl p-4 flex items-center">
-                      <View className="w-8 h-8 rounded-full bg-hui-red flex items-center justify-center mr-3">
-                        <Text className="text-sm font-bold text-white">{index + 1}</Text>
-                      </View>
-                      <Text className="text-sm text-foreground flex-1">{q.question}</Text>
-                      {answeredQuestions.includes(q.id) && (
-                        <View className="i-mdi-check-circle text-xl text-hui-green" />
-                      )}
+                  <View className="bg-hui-gray rounded-xl p-4 flex items-center">
+                    <View className="w-10 h-10 rounded-full bg-hui-red flex items-center justify-center mr-3">
+                      <View className="i-mdi-home-city text-xl text-white" />
                     </View>
-                  ))}
+                    <View className="flex-1">
+                      <Text className="text-sm font-bold text-huimo block mb-1">徽派建筑</Text>
+                      <Text className="text-xs text-muted-foreground">马头墙、天井、三雕等7道题</Text>
+                    </View>
+                  </View>
+
+                  <View className="bg-hui-gray rounded-xl p-4 flex items-center">
+                    <View className="w-10 h-10 rounded-full bg-hui-red flex items-center justify-center mr-3">
+                      <View className="i-mdi-food text-xl text-white" />
+                    </View>
+                    <View className="flex-1">
+                      <Text className="text-sm font-bold text-huimo block mb-1">徽菜美食</Text>
+                      <Text className="text-xs text-muted-foreground">臭鳜鱼、毛豆腐、一品锅等7道题</Text>
+                    </View>
+                  </View>
+
+                  <View className="bg-hui-gray rounded-xl p-4 flex items-center">
+                    <View className="w-10 h-10 rounded-full bg-hui-red flex items-center justify-center mr-3">
+                      <View className="i-mdi-drama-masks text-xl text-white" />
+                    </View>
+                    <View className="flex-1">
+                      <Text className="text-sm font-bold text-huimo block mb-1">徽州民俗</Text>
+                      <Text className="text-xs text-muted-foreground">黄梅戏、晒秋、徽墨等6道题</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
             </View>
@@ -308,18 +580,18 @@ export default function Quiz() {
                     <View className="flex items-center justify-between mb-6">
                       <Text className="text-lg font-bold text-huimo">第 {currentQuestionIndex + 1} 题</Text>
                       <Text className="text-sm text-muted-foreground">
-                        剩余题目：{QUIZ_QUESTIONS.length - currentQuestionIndex - 1}/5
+                        剩余题目：{currentQuestions.length - currentQuestionIndex - 1}/5
                       </Text>
                     </View>
 
                     {/* 题目 */}
                     <View className="bg-card rounded-xl p-5 mb-6">
-                      <Text className="text-base text-foreground leading-relaxed">{currentQuestion.question}</Text>
+                      <Text className="text-base text-foreground leading-relaxed">{currentQuestion?.question}</Text>
                     </View>
 
                     {/* 选项 */}
                     <View className="space-y-3">
-                      {currentQuestion.options.map((option, index) => {
+                      {currentQuestion?.options.map((option, index) => {
                         const isSelected = selectedAnswer === index
                         const isCorrectOption = index === currentQuestion.correctAnswer
                         const showCorrect = showFeedback && isCorrectOption
@@ -370,10 +642,10 @@ export default function Quiz() {
                       <View className="flex flex-col items-center">
                         <Text className="text-sm text-muted-foreground mb-2">正确率</Text>
                         <Text className="text-5xl font-bold text-hui-red mb-2">
-                          {Math.round((correctCount / QUIZ_QUESTIONS.length) * 100)}%
+                          {Math.round((correctCount / currentQuestions.length) * 100)}%
                         </Text>
                         <Text className="text-sm text-muted-foreground">
-                          答对 {correctCount} 题，共 {QUIZ_QUESTIONS.length} 题
+                          答对 {correctCount} 题，共 {currentQuestions.length} 题
                         </Text>
                       </View>
                     </View>
@@ -382,7 +654,7 @@ export default function Quiz() {
                     {correctCount >= 4 && (
                       <View className="bg-hui-green-light rounded-xl p-4 mb-6 w-full flex items-center">
                         <Image
-                          src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_4acf2b63-d3ff-4a80-bd4b-7a4384b4246a.jpg"
+                          src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_c5da1e9c-b39b-4e4c-adfe-a85e3cc2455b.jpg"
                           mode="aspectFit"
                           className="w-16 h-16 mr-4"
                         />
