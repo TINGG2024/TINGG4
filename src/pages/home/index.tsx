@@ -1,5 +1,5 @@
-import {Button, Image, ScrollView, Text, View} from '@tarojs/components'
-import Taro, {getEnv, showToast, useDidShow, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
+import {Image, ScrollView, Text, View} from '@tarojs/components'
+import Taro, {useDidShow, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
 import {useCallback, useEffect, useState} from 'react'
 import {getAllContents} from '@/db/api'
 import {useUserStore} from '@/store/user'
@@ -97,17 +97,6 @@ export default function Home() {
     }
   }
 
-  // 处理分享按钮点击（H5环境提示）
-  const handleShare = () => {
-    showToast({
-      title: '分享功能仅在微信小程序中可用',
-      icon: 'none',
-      duration: 2000
-    })
-  }
-
-  const isWeApp = getEnv() === 'WEAPP'
-
   // 按分类分组内容
   const foodContents = contents.filter((c) => c.category === 'food')
   const sceneryContents = contents.filter((c) => c.category === 'scenery')
@@ -127,17 +116,6 @@ export default function Home() {
           />
           {/* 10%黑蒙版 */}
           <View className="absolute inset-0 bg-black opacity-10" />
-
-          {/* 右上角分享按钮 */}
-          <View className="absolute top-4 right-4 z-10">
-            <Button
-              className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-full flex items-center break-keep text-sm"
-              size="mini"
-              {...(isWeApp ? {openType: 'share'} : {onClick: handleShare})}>
-              <View className="i-mdi-share-variant text-lg mr-1" />
-              <Text>分享</Text>
-            </Button>
-          </View>
 
           {/* 内容 */}
           <View className="absolute inset-0 flex flex-col items-center justify-center">
