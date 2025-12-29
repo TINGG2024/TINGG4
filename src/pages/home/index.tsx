@@ -129,9 +129,9 @@ export default function Home() {
           </View>
         </View>
 
-        {/* 2. 安徽特色图标分类导航（2行2列） */}
+        {/* 2. 安徽特色图标分类导航（一排横向） */}
         <View className="bg-card py-5">
-          <View className="grid grid-cols-2 gap-4 px-8">
+          <View className="flex items-center justify-between px-4">
             {CATEGORIES.map((cat, index) => (
               <View key={index} className="anhui-icon-btn" onClick={() => navigateToCategory(cat.key)}>
                 {/* 安徽特色图标 */}
