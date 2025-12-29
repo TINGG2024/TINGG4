@@ -152,7 +152,7 @@ export default function My() {
                   <View key={index} className="bg-card rounded-xl p-4 flex flex-col items-center shadow-card">
                     {/* 印章图标 */}
                     <Image
-                      src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_4acf2b63-d3ff-4a80-bd4b-7a4384b4246a.jpg"
+                      src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_c5da1e9c-b39b-4e4c-adfe-a85e3cc2455b.jpg"
                       mode="aspectFit"
                       className="w-20 h-20 mb-3"
                     />
