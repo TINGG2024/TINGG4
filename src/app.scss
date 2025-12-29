@@ -18,6 +18,7 @@
     --hui-red: 355 78% 57%;         /* 徽派红 #E63946 */
     --wan-blue: 211 50% 23%;        /* 皖蓝 #1D3557 */
     --hui-gray: 60 29% 97%;         /* 徽墨灰 #F1FAEE */
+    --hui-green: 123 38% 32%;       /* 徽派绿 #2E7D32 */
     --huimo: 0 0% 20%;              /* 徽墨色 */
     --huimo-light: 0 0% 45%;        /* 浅徽墨 */
     
@@ -350,6 +351,50 @@
     font-size: 14px;
     color: hsl(var(--huimo));
     opacity: 0.7;
+  }
+  
+  /* 问答选项卡片 */
+  .quiz-option {
+    background: hsl(var(--hui-gray));
+    border: 1px solid rgba(46, 75, 63, 0.15);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .quiz-option-selected {
+    background: hsl(var(--hui-red));
+    border-color: hsl(var(--hui-red));
+    color: white;
+  }
+  
+  .quiz-option-correct {
+    background: hsl(var(--hui-green));
+    border-color: hsl(var(--hui-green));
+    color: white;
+  }
+  
+  .quiz-option-wrong {
+    background: hsl(var(--hui-red));
+    border-color: hsl(var(--hui-red));
+    color: white;
+  }
+  
+  /* 徽派绿色（正确答案） */
+  .bg-hui-green-light {
+    background: rgba(46, 125, 50, 0.1);
+  }
+  
+  .text-hui-green {
+    color: #2E7D32;
+  }
+  
+  /* 徽派红色（错误答案） */
+  .bg-hui-red-light {
+    background: rgba(230, 57, 70, 0.1);
   }
 }
 

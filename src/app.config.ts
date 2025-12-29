@@ -5,6 +5,7 @@ const pages = [
   'pages/culture/index',
   'pages/economy/index',
   'pages/detail/index',
+  'pages/quiz/index',
   'pages/my/index'
 ]
 

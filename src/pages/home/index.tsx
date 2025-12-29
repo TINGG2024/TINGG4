@@ -21,6 +21,11 @@ const CATEGORIES = [
     key: 'culture',
     name: '历史文化',
     icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_ae49543e-b595-45d7-831e-7b485d0f8a10.jpg' // 徽派马头墙
+  },
+  {
+    key: 'quiz',
+    name: '徽文化小问答',
+    icon: 'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_0d21dfd3-7586-4314-a3ad-578b6aac8fff.jpg' // 徽派书卷
   }
 ]
 
@@ -85,7 +90,11 @@ export default function Home() {
 
   // 跳转到分类页面
   const navigateToCategory = (category: string) => {
-    Taro.switchTab({url: `/pages/${category}/index`})
+    if (category === 'quiz') {
+      Taro.navigateTo({url: '/pages/quiz/index'})
+    } else {
+      Taro.switchTab({url: `/pages/${category}/index`})
+    }
   }
 
   // 按分类分组内容
@@ -120,15 +129,11 @@ export default function Home() {
           </View>
         </View>
 
-        {/* 2. 安徽特色图标分类导航 */}
+        {/* 2. 安徽特色图标分类导航（2行2列） */}
         <View className="bg-card py-5">
-          <View className="flex items-center justify-center px-4">
+          <View className="grid grid-cols-2 gap-4 px-8">
             {CATEGORIES.map((cat, index) => (
-              <View
-                key={index}
-                className="anhui-icon-btn"
-                style={{marginLeft: index === 0 ? 0 : '20px'}}
-                onClick={() => navigateToCategory(cat.key)}>
+              <View key={index} className="anhui-icon-btn" onClick={() => navigateToCategory(cat.key)}>
                 {/* 安徽特色图标 */}
                 <Image src={cat.icon} mode="aspectFit" className="anhui-icon-image" />
                 {/* 文字 */}
