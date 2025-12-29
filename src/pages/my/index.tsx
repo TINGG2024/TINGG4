@@ -10,6 +10,7 @@ export default function My() {
   const [loading, setLoading] = useState(true)
   const [editingNickname, setEditingNickname] = useState(false)
   const [tempNickname, setTempNickname] = useState('')
+  const [badges, setBadges] = useState<string[]>([])
 
   const userId = useUserStore((state) => state.userId)
   const nickname = useUserStore((state) => state.nickname)
@@ -21,6 +22,11 @@ export default function My() {
     setLoading(true)
     const data = await getUserFavorites(userId)
     setFavorites(data)
+
+    // 加载印章数据
+    const badgesData = Taro.getStorageSync('badges') || []
+    setBadges(badgesData)
+
     setLoading(false)
   }, [userId])
 
@@ -130,6 +136,56 @@ export default function My() {
                 <Text className="text-huimo font-mono break-all text-[11px]">{userId.slice(0, 8)}...</Text>
               </View>
             </View>
+          </View>
+        </View>
+
+        {/* 我的印章 - 宣纸纹理背景 */}
+        <View className="xuan-paper-bg px-4 py-6">
+          <View className="relative z-10">
+            <View className="flex items-center justify-center mb-4">
+              <Text className="text-lg font-bold text-huimo">我的印章</Text>
+            </View>
+
+            {badges.length > 0 ? (
+              <View className="grid grid-cols-2 gap-4">
+                {badges.map((badge, index) => (
+                  <View key={index} className="bg-card rounded-xl p-4 flex flex-col items-center shadow-card">
+                    {/* 印章图标 */}
+                    <Image
+                      src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_4acf2b63-d3ff-4a80-bd4b-7a4384b4246a.jpg"
+                      mode="aspectFit"
+                      className="w-20 h-20 mb-3"
+                    />
+                    {/* 印章名称 */}
+                    <Text className="text-sm font-bold text-huimo text-center mb-1">{badge}</Text>
+                    {/* 获得时间 */}
+                    <Text className="text-xs text-muted-foreground text-center">
+                      {(() => {
+                        const records = Taro.getStorageSync('quizRecords') || []
+                        const lastRecord = records[records.length - 1]
+                        if (lastRecord?.date) {
+                          const date = new Date(lastRecord.date)
+                          return `${date.getMonth() + 1}月${date.getDate()}日获得`
+                        }
+                        return '已获得'
+                      })()}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <View className="flex flex-col items-center justify-center py-16">
+                {/* 徽派空星图标 */}
+                <Image
+                  src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_036b4c00-f71e-496c-be55-ac396c548f3c.jpg"
+                  mode="aspectFit"
+                  className="w-24 h-24 mb-4 opacity-30"
+                />
+                {/* 徽派行书提示文字 */}
+                <Text className="hui-xingshu-text text-center mb-2">暂无印章</Text>
+                <Text className="text-xs text-muted-foreground text-center">完成徽文化小问答可获得印章</Text>
+              </View>
+            )}
           </View>
         </View>
 
