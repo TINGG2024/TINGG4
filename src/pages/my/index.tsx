@@ -65,139 +65,148 @@ export default function My() {
   return (
     <View className="min-h-screen bg-background">
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
-        {/* 用户信息卡片 */}
-        <View className="bg-gradient-primary px-6 pt-8 pb-12">
-          <View className="flex items-center">
-            <View className="w-20 h-20 rounded-full bg-primary-foreground flex items-center justify-center mr-4">
-              <Text className="text-3xl text-primary font-bold">{nickname.charAt(0)}</Text>
-            </View>
-            <View className="flex-1">
-              {editingNickname ? (
-                <View>
-                  <View className="bg-primary-foreground rounded-lg px-3 py-2 mb-2">
-                    <Input
-                      className="text-foreground"
-                      value={tempNickname}
-                      onInput={(e) => setTempNickname(e.detail.value)}
-                      placeholder="请输入昵称"
-                      maxlength={20}
-                    />
-                  </View>
-                  <View className="flex">
-                    <Button
-                      className="flex-1 bg-secondary text-secondary-foreground py-2 rounded-lg mr-2 break-keep text-sm"
-                      size="default"
-                      onClick={handleSaveNickname}>
-                      保存
-                    </Button>
-                    <Button
-                      className="flex-1 bg-primary-foreground text-primary py-2 rounded-lg break-keep text-sm"
-                      size="default"
-                      onClick={handleCancelEdit}>
-                      取消
-                    </Button>
-                  </View>
-                </View>
-              ) : (
-                <View>
-                  <Text className="text-2xl font-bold text-primary-foreground block mb-2">{nickname}</Text>
-                  <View className="flex items-center" onClick={handleEditNickname}>
-                    <View className="i-mdi-pencil text-primary-foreground mr-1" />
-                    <Text className="text-sm text-primary-foreground opacity-90">修改昵称</Text>
-                  </View>
-                </View>
-              )}
-            </View>
-          </View>
-        </View>
-
-        {/* 统计信息 */}
-        <View className="px-4 -mt-8 mb-6">
-          <View className="bg-card rounded-2xl shadow-card p-6">
-            <View className="flex justify-around">
-              <View className="flex flex-col items-center">
-                <Text className="text-2xl font-bold text-primary block mb-1">{favorites.length}</Text>
-                <Text className="text-sm text-muted-foreground">收藏</Text>
+        {/* 徽派风格顶部 */}
+        <View className="my-header-hui px-6 pt-8 pb-6">
+          <View className="relative z-10">
+            <View className="flex items-center mb-6">
+              {/* 徽派印章头像 */}
+              <View className="hui-seal-avatar mr-4">
+                <Image
+                  src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_4acf2b63-d3ff-4a80-bd4b-7a4384b4246a.jpg"
+                  mode="aspectFit"
+                  className="hui-seal-avatar-image"
+                />
               </View>
-              <View className="w-px bg-border" />
-              <View className="flex flex-col items-center">
-                <Text className="text-2xl font-bold text-secondary block mb-1">
-                  {userId ? userId.slice(-6) : '------'}
-                </Text>
-                <Text className="text-sm text-muted-foreground">用户ID</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* 我的收藏 */}
-        <View className="px-4 pb-6">
-          <View className="flex items-center mb-4">
-            <View className="i-mdi-star text-2xl text-primary mr-2" />
-            <Text className="text-lg font-bold text-foreground">我的收藏</Text>
-          </View>
-
-          {loading ? (
-            <View className="flex justify-center items-center py-12">
-              <Text className="text-muted-foreground">加载中...</Text>
-            </View>
-          ) : favorites.length > 0 ? (
-            <View className="space-y-3">
-              {favorites.map((content) => (
-                <View
-                  key={content.id}
-                  className="bg-card rounded-xl shadow-card overflow-hidden"
-                  onClick={() => navigateToDetail(content.id)}>
-                  <View className="flex">
-                    {/* 图片 */}
-                    <View className="w-28 h-28 flex-shrink-0">
-                      <Image
-                        src={content.image_url || 'https://via.placeholder.com/200'}
-                        mode="aspectFill"
-                        className="w-full h-full"
+              <View className="flex-1">
+                {editingNickname ? (
+                  <View>
+                    <View className="bg-card rounded-lg px-3 py-2 mb-2 border border-border">
+                      <Input
+                        className="text-foreground"
+                        value={tempNickname}
+                        onInput={(e) => setTempNickname(e.detail.value)}
+                        placeholder="请输入昵称"
+                        maxlength={20}
                       />
                     </View>
+                    <View className="flex">
+                      <Button
+                        className="flex-1 bg-hui-red text-white py-2 rounded-lg mr-2 break-keep text-sm"
+                        size="default"
+                        onClick={handleSaveNickname}>
+                        保存
+                      </Button>
+                      <Button
+                        className="flex-1 bg-muted text-muted-foreground py-2 rounded-lg break-keep text-sm"
+                        size="default"
+                        onClick={handleCancelEdit}>
+                        取消
+                      </Button>
+                    </View>
+                  </View>
+                ) : (
+                  <View>
+                    {/* 徽派书法体昵称 */}
+                    <Text className="hui-nickname block mb-2">{nickname}</Text>
+                    {/* 小尺寸浅灰色修改按钮 */}
+                    <Text className="text-xs text-muted-foreground" onClick={handleEditNickname}>
+                      修改昵称
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
 
-                    {/* 内容 */}
-                    <View className="flex-1 p-3 flex flex-col justify-between">
-                      <View>
-                        <Text className="text-base font-semibold text-foreground block mb-1 break-keep">
-                          {content.title}
-                        </Text>
-                        {content.subtitle && (
-                          <Text className="text-xs text-muted-foreground block mb-2 break-keep">
-                            {content.subtitle}
-                          </Text>
-                        )}
+            {/* 徽派信息卡片（并排） */}
+            <View className="grid grid-cols-2 gap-3">
+              {/* 收藏卡片 */}
+              <View className="hui-info-card">
+                <Text className="text-xs text-muted-foreground block mb-2">收藏</Text>
+                <Text className="hui-red-number">{favorites.length}</Text>
+              </View>
+              {/* 用户ID卡片 */}
+              <View className="hui-info-card">
+                <Text className="text-xs text-muted-foreground block mb-2">用户ID</Text>
+                <Text className="text-sm text-huimo font-mono break-all">{userId.slice(0, 8)}...</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* 我的收藏 - 宣纸纹理背景 */}
+        <View className="xuan-paper-bg px-4 py-6">
+          <View className="relative z-10">
+            <View className="flex items-center justify-center mb-4">
+              <Text className="text-lg font-bold text-huimo">我的收藏</Text>
+            </View>
+
+            {loading ? (
+              <View className="flex justify-center items-center py-12">
+                <Text className="hui-xingshu-text">加载中...</Text>
+              </View>
+            ) : favorites.length > 0 ? (
+              <View className="space-y-3">
+                {favorites.map((content) => (
+                  <View
+                    key={content.id}
+                    className="bg-card rounded-xl shadow-card overflow-hidden"
+                    onClick={() => navigateToDetail(content.id)}>
+                    <View className="flex">
+                      {/* 图片 */}
+                      <View className="w-28 h-28 flex-shrink-0">
+                        <Image
+                          src={content.image_url || 'https://via.placeholder.com/200'}
+                          mode="aspectFill"
+                          className="w-full h-full"
+                        />
                       </View>
 
-                      {/* 统计信息 */}
-                      <View className="flex items-center text-xs text-muted-foreground">
-                        <View className="flex items-center mr-3">
-                          <View className="i-mdi-thumb-up-outline text-sm mr-1" />
-                          <Text>{content.likes_count}</Text>
+                      {/* 内容 */}
+                      <View className="flex-1 p-3 flex flex-col justify-between">
+                        <View>
+                          <Text className="text-base font-semibold text-foreground block mb-1 break-keep">
+                            {content.title}
+                          </Text>
+                          {content.subtitle && (
+                            <Text className="text-xs text-muted-foreground block mb-2 break-keep">
+                              {content.subtitle}
+                            </Text>
+                          )}
                         </View>
-                        <View className="flex items-center mr-3">
-                          <View className="i-mdi-star-outline text-sm mr-1" />
-                          <Text>{content.favorites_count}</Text>
-                        </View>
-                        <View className="flex items-center">
-                          <View className="i-mdi-comment-outline text-sm mr-1" />
-                          <Text>{content.comments_count}</Text>
+
+                        {/* 统计信息 */}
+                        <View className="flex items-center text-xs text-muted-foreground">
+                          <View className="flex items-center mr-3">
+                            <View className="i-mdi-thumb-up-outline text-sm mr-1" />
+                            <Text>{content.likes_count}</Text>
+                          </View>
+                          <View className="flex items-center mr-3">
+                            <View className="i-mdi-star-outline text-sm mr-1" />
+                            <Text>{content.favorites_count}</Text>
+                          </View>
+                          <View className="flex items-center">
+                            <View className="i-mdi-comment-outline text-sm mr-1" />
+                            <Text>{content.comments_count}</Text>
+                          </View>
                         </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              ))}
-            </View>
-          ) : (
-            <View className="flex flex-col items-center justify-center py-12 bg-card rounded-2xl">
-              <View className="i-mdi-star-off-outline text-6xl text-muted-foreground mb-4" />
-              <Text className="text-muted-foreground mb-2">还没有收藏内容</Text>
-              <Text className="text-sm text-muted-foreground">快去发现喜欢的内容吧</Text>
-            </View>
-          )}
+                ))}
+              </View>
+            ) : (
+              <View className="flex flex-col items-center justify-center py-16">
+                {/* 徽派空星图标 */}
+                <Image
+                  src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_036b4c00-f71e-496c-be55-ac396c548f3c.jpg"
+                  mode="aspectFit"
+                  className="w-24 h-24 mb-4 opacity-30"
+                />
+                {/* 徽派行书提示文字 */}
+                <Text className="hui-xingshu-text text-center">暂无收藏内容</Text>
+              </View>
+            )}
+          </View>
         </View>
       </ScrollView>
     </View>

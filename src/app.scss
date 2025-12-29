@@ -255,5 +255,100 @@
     color: hsl(var(--hui-red));
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
   }
+  
+  /* 我的页面徽派风格顶部 */
+  .my-header-hui {
+    position: relative;
+    background: linear-gradient(135deg, hsl(var(--hui-gray)) 0%, rgba(241, 250, 238, 0.9) 100%);
+    overflow: hidden;
+  }
+  
+  /* 徽州窗棂纹理 */
+  .my-header-hui::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_2be31fd9-f4f7-4875-b39f-2d7de3221fea.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+  
+  /* 徽派印章头像 */
+  .hui-seal-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #E63946 0%, #D62828 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+    position: relative;
+  }
+  
+  /* 徽派印章头像图片 */
+  .hui-seal-avatar-image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+  
+  /* 徽派昵称文字 */
+  .hui-nickname {
+    font-family: 'STKaiti', 'KaiTi', 'SimKai', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: hsl(var(--huimo));
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  }
+  
+  /* 徽派信息卡片 */
+  .hui-info-card {
+    background: hsl(var(--hui-gray));
+    border: 1px solid rgba(46, 75, 63, 0.15);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  
+  /* 徽派红色强调数字 */
+  .hui-red-number {
+    color: hsl(var(--hui-red));
+    font-weight: 700;
+    font-size: 24px;
+  }
+  
+  /* 宣纸纹理背景 */
+  .xuan-paper-bg {
+    position: relative;
+    background: #FEFEFE;
+  }
+  
+  .xuan-paper-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_2b8670dc-13c7-48b1-995a-f1c4b5ceec89.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.03;
+    pointer-events: none;
+  }
+  
+  /* 徽派行书提示文字 */
+  .hui-xingshu-text {
+    font-family: 'STXingkai', 'STKaiti', 'KaiTi', 'SimKai', serif;
+    font-size: 14px;
+    color: hsl(var(--huimo));
+    opacity: 0.7;
+  }
 }
 
