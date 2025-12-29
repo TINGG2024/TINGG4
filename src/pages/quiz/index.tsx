@@ -155,38 +155,136 @@ export default function Quiz() {
     <View className="min-h-screen bg-background">
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         {/* 宣纸纹理背景 */}
-        <View className="xuan-paper-bg min-h-screen px-6 py-8">
+        <View className="xuan-paper-bg min-h-screen">
           <View className="relative z-10">
-            {/* 标题区域 */}
-            <View className="flex items-center justify-between mb-6">
-              <Text className="hui-calligraphy-title text-2xl">徽派文化小问答</Text>
-              <Button
-                className="bg-hui-red text-white px-6 py-2 rounded-lg break-keep text-sm"
-                size="default"
-                onClick={handleStartQuiz}>
-                开始答题
-              </Button>
+            {/* 顶部导航栏 */}
+            <View className="flex items-center px-6 py-4 mb-4">
+              <View
+                className="w-10 h-10 rounded-full bg-card flex items-center justify-center"
+                onClick={() => Taro.navigateBack()}>
+                <View className="i-mdi-arrow-left text-2xl text-huimo" />
+              </View>
+              <Text className="hui-calligraphy-title text-xl flex-1 text-center mr-10">徽派文化小问答</Text>
             </View>
 
-            {/* 说明文字 */}
-            <View className="bg-card rounded-xl p-4 mb-6">
-              <Text className="text-sm text-muted-foreground block mb-2">测测你对安徽文化的了解程度！</Text>
-              <Text className="text-xs text-muted-foreground block mb-1">• 共5道题，涵盖徽菜、徽派建筑、徽州民俗</Text>
-              <Text className="text-xs text-muted-foreground block mb-1">• 答对4题及以上可获得"徽文化达人"印章</Text>
-              <Text className="text-xs text-muted-foreground block">• 每题答完后会显示正确答案和解析</Text>
-            </View>
-
-            {/* 题目预览 */}
-            <View className="space-y-3">
-              {QUIZ_QUESTIONS.map((q, index) => (
-                <View key={q.id} className="bg-card rounded-xl p-4 flex items-center">
-                  <View className="w-8 h-8 rounded-full bg-hui-gray flex items-center justify-center mr-3">
-                    <Text className="text-sm font-bold text-huimo">{index + 1}</Text>
-                  </View>
-                  <Text className="text-sm text-foreground flex-1">{q.question}</Text>
-                  {answeredQuestions.includes(q.id) && <View className="i-mdi-check-circle text-xl text-hui-green" />}
+            {/* 主要内容区域 */}
+            <View className="px-6">
+              {/* 精美介绍卡片 */}
+              <View className="bg-card rounded-2xl p-6 mb-6 shadow-lg">
+                {/* 装饰性图标 */}
+                <View className="flex justify-center mb-4">
+                  <Image
+                    src="https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_0d21dfd3-7586-4314-a3ad-578b6aac8fff.jpg"
+                    mode="aspectFit"
+                    className="w-24 h-24"
+                  />
                 </View>
-              ))}
+
+                {/* 标题 */}
+                <Text className="hui-calligraphy-title text-2xl text-center block mb-4 text-huimo">
+                  测测你对安徽文化的了解
+                </Text>
+
+                {/* 说明文字 */}
+                <View className="bg-hui-gray rounded-xl p-4 mb-6">
+                  <View className="flex items-start mb-3">
+                    <View className="i-mdi-book-open-variant text-xl text-hui-red mr-2 mt-0.5" />
+                    <View className="flex-1">
+                      <Text className="text-sm text-huimo font-bold block mb-1">题目范围</Text>
+                      <Text className="text-xs text-muted-foreground">
+                        共5道题，涵盖徽菜美食、徽派建筑、徽州民俗等安徽特色文化
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View className="flex items-start mb-3">
+                    <View className="i-mdi-trophy text-xl text-hui-red mr-2 mt-0.5" />
+                    <View className="flex-1">
+                      <Text className="text-sm text-huimo font-bold block mb-1">奖励机制</Text>
+                      <Text className="text-xs text-muted-foreground">
+                        答对4题及以上可获得"徽文化达人"印章，保存到个人中心
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View className="flex items-start">
+                    <View className="i-mdi-lightbulb-on text-xl text-hui-red mr-2 mt-0.5" />
+                    <View className="flex-1">
+                      <Text className="text-sm text-huimo font-bold block mb-1">答题提示</Text>
+                      <Text className="text-xs text-muted-foreground">
+                        每题答完后会显示正确答案和详细解析，帮助你了解更多
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+                {/* 开始答题按钮 */}
+                <Button
+                  className="w-full bg-hui-red text-white py-4 rounded-xl break-keep text-base font-bold"
+                  size="default"
+                  onClick={handleStartQuiz}>
+                  开始答题
+                </Button>
+              </View>
+
+              {/* 答题统计卡片 */}
+              <View className="bg-card rounded-2xl p-6 mb-6">
+                <View className="flex items-center justify-between mb-4">
+                  <Text className="text-base font-bold text-huimo">答题记录</Text>
+                  <View className="i-mdi-chart-line text-xl text-hui-red" />
+                </View>
+
+                <View className="grid grid-cols-3 gap-4">
+                  <View className="bg-hui-gray rounded-xl p-4 flex flex-col items-center">
+                    <Text className="text-2xl font-bold text-hui-red mb-1">
+                      {Taro.getStorageSync('quizRecords')?.length || 0}
+                    </Text>
+                    <Text className="text-xs text-muted-foreground">答题次数</Text>
+                  </View>
+
+                  <View className="bg-hui-gray rounded-xl p-4 flex flex-col items-center">
+                    <Text className="text-2xl font-bold text-hui-green mb-1">
+                      {(() => {
+                        const records = Taro.getStorageSync('quizRecords') || []
+                        if (records.length === 0) return 0
+                        const totalCorrect = records.reduce((sum: number, r: any) => sum + r.correctCount, 0)
+                        const totalQuestions = records.length * QUIZ_QUESTIONS.length
+                        return Math.round((totalCorrect / totalQuestions) * 100)
+                      })()}%
+                    </Text>
+                    <Text className="text-xs text-muted-foreground">平均正确率</Text>
+                  </View>
+
+                  <View className="bg-hui-gray rounded-xl p-4 flex flex-col items-center">
+                    <Text className="text-2xl font-bold text-huimo mb-1">
+                      {(Taro.getStorageSync('badges') || []).includes('徽文化达人') ? '1' : '0'}
+                    </Text>
+                    <Text className="text-xs text-muted-foreground">获得印章</Text>
+                  </View>
+                </View>
+              </View>
+
+              {/* 题目预览卡片 */}
+              <View className="bg-card rounded-2xl p-6 mb-6">
+                <View className="flex items-center justify-between mb-4">
+                  <Text className="text-base font-bold text-huimo">题目预览</Text>
+                  <View className="i-mdi-format-list-numbered text-xl text-hui-red" />
+                </View>
+
+                <View className="space-y-3">
+                  {QUIZ_QUESTIONS.map((q, index) => (
+                    <View key={q.id} className="bg-hui-gray rounded-xl p-4 flex items-center">
+                      <View className="w-8 h-8 rounded-full bg-hui-red flex items-center justify-center mr-3">
+                        <Text className="text-sm font-bold text-white">{index + 1}</Text>
+                      </View>
+                      <Text className="text-sm text-foreground flex-1">{q.question}</Text>
+                      {answeredQuestions.includes(q.id) && (
+                        <View className="i-mdi-check-circle text-xl text-hui-green" />
+                      )}
+                    </View>
+                  ))}
+                </View>
+              </View>
             </View>
           </View>
         </View>
