@@ -121,13 +121,13 @@ export default function My() {
             <View className="grid grid-cols-2 gap-3">
               {/* 收藏卡片 */}
               <View className="hui-info-card">
-                <Text className="text-xs text-muted-foreground block mb-2">收藏</Text>
+                <Text className="text-muted-foreground block mb-2 text-[12px]">收藏</Text>
                 <Text className="hui-red-number">{favorites.length}</Text>
               </View>
               {/* 用户ID卡片 */}
               <View className="hui-info-card">
-                <Text className="text-xs text-muted-foreground block mb-2">用户ID</Text>
-                <Text className="text-sm text-huimo font-mono break-all">{userId.slice(0, 8)}...</Text>
+                <Text className="text-muted-foreground block mb-2 text-[12px]">用户ID</Text>
+                <Text className="text-huimo font-mono break-all text-[11px]">{userId.slice(0, 8)}...</Text>
               </View>
             </View>
           </View>

@@ -283,12 +283,13 @@
     width: 80px;
     height: 80px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #E63946 0%, #D62828 100%);
+    background: linear-gradient(135deg, hsl(var(--hui-gray)) 0%, rgba(241, 250, 238, 0.95) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+    box-shadow: 0 2px 12px rgba(46, 75, 63, 0.15);
     position: relative;
+    border: 1px solid rgba(46, 75, 63, 0.1);
   }
   
   /* 徽派印章头像图片 */
