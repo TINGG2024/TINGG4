@@ -150,11 +150,11 @@ export default function Home() {
                   <View className="i-mdi-chevron-right text-sm" />
                 </View>
               </View>
-              <View className="flex flex-wrap justify-between">
+              <View className="grid grid-cols-2 gap-3">
                 {foodContents.map((content) => (
                   <View
                     key={content.id}
-                    className="w-[48%] mb-3 bg-card rounded-xl shadow-card overflow-hidden card-scale"
+                    className="bg-card rounded-xl shadow-card overflow-hidden card-scale"
                     onClick={() => navigateToDetail(content.id)}>
                     <View className="w-full" style={{paddingTop: '66.67%', position: 'relative'}}>
                       <Image
@@ -199,11 +199,11 @@ export default function Home() {
                   <View className="i-mdi-chevron-right text-sm" />
                 </View>
               </View>
-              <View className="flex flex-wrap justify-between">
+              <View className="grid grid-cols-2 gap-3">
                 {sceneryContents.map((content) => (
                   <View
                     key={content.id}
-                    className="w-[48%] mb-3 bg-card rounded-xl shadow-card overflow-hidden card-scale"
+                    className="bg-card rounded-xl shadow-card overflow-hidden card-scale"
                     onClick={() => navigateToDetail(content.id)}>
                     <View className="w-full" style={{paddingTop: '66.67%', position: 'relative'}}>
                       <Image
@@ -248,11 +248,11 @@ export default function Home() {
                   <View className="i-mdi-chevron-right text-sm" />
                 </View>
               </View>
-              <View className="flex flex-wrap justify-between">
+              <View className="grid grid-cols-2 gap-3">
                 {cultureContents.map((content) => (
                   <View
                     key={content.id}
-                    className="w-[48%] mb-3 bg-card rounded-xl shadow-card overflow-hidden card-scale"
+                    className="bg-card rounded-xl shadow-card overflow-hidden card-scale"
                     onClick={() => navigateToDetail(content.id)}>
                     <View className="w-full" style={{paddingTop: '66.67%', position: 'relative'}}>
                       <Image
