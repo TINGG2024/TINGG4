@@ -41,7 +41,7 @@ export default function Admin() {
     <View className="min-h-screen bg-background">
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         {/* 徽派风格顶部 */}
-        <View className="bg-gradient-primary px-6 pt-8 pb-12">
+        <View className="bg-gradient-secondary px-6 pt-8 pb-12">
           {/* 返回按钮 */}
           <View className="mb-4">
             <View className="flex items-center w-20" onClick={() => Taro.navigateBack()}>
