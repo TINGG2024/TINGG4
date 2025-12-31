@@ -1,220 +1,40 @@
 import {Button, Image, ScrollView, Text, View} from '@tarojs/components'
 import Taro, {useDidShow} from '@tarojs/taro'
-import {useState} from 'react'
+import {useCallback, useState} from 'react'
+import {type QuizQuestion as DBQuizQuestion, getAllQuizQuestions} from '@/db/api'
 
-// 题库配置
+// 题库配置（适配数据库格式）
 interface QuizQuestion {
   id: number
   question: string
   options: string[]
   correctAnswer: number // 正确答案的索引（0-based）
   explanation: string
-  category: 'architecture' | 'food' | 'culture' // 题目分类
 }
 
-// 20道徽派文化题库
-const QUIZ_QUESTIONS: QuizQuestion[] = [
-  // 建筑类题目（7道）
-  {
-    id: 1,
-    question: '马头墙最初的主要作用是？',
-    options: ['A. 美观', 'B. 防火', 'C. 防盗'],
-    correctAnswer: 1,
-    explanation: '马头墙又称防火墙，是徽派建筑的防火设计，可以有效阻止火势蔓延。',
-    category: 'architecture'
-  },
-  {
-    id: 2,
-    question: '徽州三雕指的是哪三种雕刻工艺？',
-    options: ['A. 木雕、石雕、砖雕', 'B. 木雕、玉雕、竹雕', 'C. 石雕、铜雕、泥雕'],
-    correctAnswer: 0,
-    explanation: '徽州三雕是指木雕、石雕、砖雕，是徽派建筑装饰的重要组成部分，工艺精湛。',
-    category: 'architecture'
-  },
-  {
-    id: 3,
-    question: '徽派建筑的典型特征"三间两厢"中的"厢"指的是？',
-    options: ['A. 厢房', 'B. 走廊', 'C. 天井'],
-    correctAnswer: 0,
-    explanation: '徽派建筑"三间两厢"指正房三间，两侧各有一间厢房，形成对称布局。',
-    category: 'architecture'
-  },
-  {
-    id: 4,
-    question: '徽派建筑中的"天井"主要作用是？',
-    options: ['A. 采光通风', 'B. 种植花草', 'C. 储存雨水'],
-    correctAnswer: 0,
-    explanation: '天井是徽派建筑的核心空间，主要用于采光、通风和排水，体现"四水归堂"的理念。',
-    category: 'architecture'
-  },
-  {
-    id: 5,
-    question: '宏村被誉为"中国画里的乡村"，其水系设计灵感来源于？',
-    options: ['A. 牛形', 'B. 龙形', 'C. 凤形'],
-    correctAnswer: 0,
-    explanation: '宏村水系按照牛的形态设计，月沼为牛胃，南湖为牛肚，水圳为牛肠，体现了徽州人的智慧。',
-    category: 'architecture'
-  },
-  {
-    id: 6,
-    question: '徽派建筑的门楼上常见的"八字门"寓意是？',
-    options: ['A. 招财进宝', 'B. 开门迎客', 'C. 福寿双全'],
-    correctAnswer: 1,
-    explanation: '八字门向外敞开，寓意开门迎客、广纳四方来客，体现徽商的开放胸怀。',
-    category: 'architecture'
-  },
-  {
-    id: 7,
-    question: '西递村的标志性建筑"胡文光刺史牌坊"建于哪个朝代？',
-    options: ['A. 明朝', 'B. 清朝', 'C. 宋朝'],
-    correctAnswer: 0,
-    explanation: '胡文光刺史牌坊建于明朝万历年间，是徽州石雕艺术的代表作。',
-    category: 'architecture'
-  },
+// 将数据库格式转换为页面格式
+function convertDBQuestionToPageFormat(dbQuestion: DBQuizQuestion): QuizQuestion {
+  const options = [`A. ${dbQuestion.option_a}`, `B. ${dbQuestion.option_b}`, `C. ${dbQuestion.option_c}`]
 
-  // 美食类题目（7道）
-  {
-    id: 8,
-    question: '臭鳜鱼的传统腌制时间约为？',
-    options: ['A. 1天', 'B. 7天', 'C. 15天'],
-    correctAnswer: 1,
-    explanation: '臭鳜鱼需要腌制约7天，让鱼肉发酵产生独特的臭味，这是徽菜的经典做法。',
-    category: 'food'
-  },
-  {
-    id: 9,
-    question: '徽菜"毛豆腐"的制作关键是？',
-    options: ['A. 发酵长毛', 'B. 油炸金黄', 'C. 蒸煮软烂'],
-    correctAnswer: 0,
-    explanation: '毛豆腐的制作关键是让豆腐表面长出白色绒毛（霉菌），再经过煎炸，形成独特风味。',
-    category: 'food'
-  },
-  {
-    id: 10,
-    question: '徽菜"一品锅"的名称来源于？',
-    options: ['A. 官职品级', 'B. 食材品质', 'C. 烹饪工艺'],
-    correctAnswer: 0,
-    explanation: '一品锅因其分层摆放食材，寓意官居一品而得名，是徽州传统宴席名菜。',
-    category: 'food'
-  },
-  {
-    id: 11,
-    question: '徽州传统糕点"黄山烧饼"的特点是？',
-    options: ['A. 外酥里嫩', 'B. 香甜软糯', 'C. 酥脆爽口'],
-    correctAnswer: 0,
-    explanation: '黄山烧饼外皮酥脆，内馅鲜美，是徽州传统小吃的代表。',
-    category: 'food'
-  },
-  {
-    id: 12,
-    question: '徽菜"刀板香"的主要食材是？',
-    options: ['A. 腊肉', 'B. 咸鱼', 'C. 豆腐干'],
-    correctAnswer: 0,
-    explanation: '刀板香是用腊肉在木板上烤制而成，肉香四溢，是徽州传统美食。',
-    category: 'food'
-  },
-  {
-    id: 13,
-    question: '徽州传统饮品"黄山毛峰"属于哪类茶？',
-    options: ['A. 绿茶', 'B. 红茶', 'C. 乌龙茶'],
-    correctAnswer: 0,
-    explanation: '黄山毛峰是中国十大名茶之一，属于绿茶类，以其鲜爽回甘著称。',
-    category: 'food'
-  },
-  {
-    id: 14,
-    question: '徽菜"问政山笋"的名称来源于？',
-    options: ['A. 产地山名', 'B. 烹饪方法', 'C. 历史典故'],
-    correctAnswer: 0,
-    explanation: '问政山笋产自黄山问政山，笋质鲜嫩，是徽菜中的珍品。',
-    category: 'food'
-  },
+  // 将A/B/C转换为0/1/2
+  const correctAnswerMap: Record<string, number> = {A: 0, B: 1, C: 2}
+  const correctAnswer = correctAnswerMap[dbQuestion.correct_answer] || 0
 
-  // 民俗文化类题目（6道）
-  {
-    id: 15,
-    question: '黄梅戏的发源地是安徽哪个城市？',
-    options: ['A. 安庆', 'B. 黄山', 'C. 合肥'],
-    correctAnswer: 0,
-    explanation: '黄梅戏发源于安庆市，是中国五大戏曲剧种之一，被誉为"中国的乡村音乐剧"。',
-    category: 'culture'
-  },
-  {
-    id: 16,
-    question: '徽州传统节日"晒秋"通常在哪个季节举行？',
-    options: ['A. 春季', 'B. 夏季', 'C. 秋季'],
-    correctAnswer: 2,
-    explanation: '晒秋是徽州传统民俗，每年秋季村民将收获的农作物晾晒在屋顶、晒场，形成独特景观。',
-    category: 'culture'
-  },
-  {
-    id: 17,
-    question: '徽州传统婚俗中，新娘出嫁时要跨过什么？',
-    options: ['A. 火盆', 'B. 门槛', 'C. 红毯'],
-    correctAnswer: 0,
-    explanation: '徽州传统婚俗中，新娘出嫁时要跨火盆，寓意驱邪避灾、红红火火。',
-    category: 'culture'
-  },
-  {
-    id: 18,
-    question: '徽州传统戏曲"徽剧"是哪个剧种的前身？',
-    options: ['A. 京剧', 'B. 越剧', 'C. 黄梅戏'],
-    correctAnswer: 0,
-    explanation: '徽剧是京剧的重要源流之一，徽班进京后与其他剧种融合，逐渐形成京剧。',
-    category: 'culture'
-  },
-  {
-    id: 19,
-    question: '徽州传统手工艺"徽墨"的主要原料是？',
-    options: ['A. 松烟', 'B. 煤炭', 'C. 木炭'],
-    correctAnswer: 0,
-    explanation: '徽墨以松烟为主要原料，配以动物胶等材料制成，是中国四大名墨之首。',
-    category: 'culture'
-  },
-  {
-    id: 20,
-    question: '徽州传统民居中的"商"字门寓意是？',
-    options: ['A. 经商致富', 'B. 高尚品德', 'C. 商议大事'],
-    correctAnswer: 0,
-    explanation: '徽州民居中的"商"字门体现了徽商文化，寓意经商致富、生意兴隆。',
-    category: 'culture'
+  return {
+    id: dbQuestion.id,
+    question: dbQuestion.question,
+    options,
+    correctAnswer,
+    explanation: dbQuestion.explanation || '暂无解析'
   }
-]
+}
 
-// 随机抽题算法：确保建筑、美食、民俗各至少1道
-function getRandomQuestions(): QuizQuestion[] {
-  const architectureQuestions = QUIZ_QUESTIONS.filter((q) => q.category === 'architecture')
-  const foodQuestions = QUIZ_QUESTIONS.filter((q) => q.category === 'food')
-  const cultureQuestions = QUIZ_QUESTIONS.filter((q) => q.category === 'culture')
+// 随机抽题算法：从所有题目中随机抽取5道
+function getRandomQuestions(allQuestions: QuizQuestion[]): QuizQuestion[] {
+  if (allQuestions.length === 0) return []
 
-  // 从每个分类中随机抽取至少1道
-  const selectedQuestions: QuizQuestion[] = []
-
-  // 随机抽取1道建筑题
-  const randomArchitecture = architectureQuestions[Math.floor(Math.random() * architectureQuestions.length)]
-  selectedQuestions.push(randomArchitecture)
-
-  // 随机抽取1道美食题
-  const randomFood = foodQuestions[Math.floor(Math.random() * foodQuestions.length)]
-  selectedQuestions.push(randomFood)
-
-  // 随机抽取1道民俗题
-  const randomCulture = cultureQuestions[Math.floor(Math.random() * cultureQuestions.length)]
-  selectedQuestions.push(randomCulture)
-
-  // 从剩余题目中随机抽取2道
-  const remainingQuestions = QUIZ_QUESTIONS.filter((q) => !selectedQuestions.find((sq) => sq.id === q.id))
-
-  for (let i = 0; i < 2; i++) {
-    if (remainingQuestions.length > 0) {
-      const randomIndex = Math.floor(Math.random() * remainingQuestions.length)
-      selectedQuestions.push(remainingQuestions[randomIndex])
-      remainingQuestions.splice(randomIndex, 1)
-    }
-  }
-
-  // 打乱顺序
-  return selectedQuestions.sort(() => Math.random() - 0.5)
+  const shuffled = [...allQuestions].sort(() => Math.random() - 0.5)
+  return shuffled.slice(0, Math.min(5, allQuestions.length))
 }
 
 // 每日答题次数管理
@@ -262,11 +82,20 @@ export default function Quiz() {
   const [showResult, setShowResult] = useState(false)
   const [currentQuestions, setCurrentQuestions] = useState<QuizQuestion[]>([])
   const [dailyQuizCount, setDailyQuizCount] = useState(0)
+  const [allQuestions, setAllQuestions] = useState<QuizQuestion[]>([])
 
-  // 页面显示时刷新答题次数
+  // 从数据库加载所有题目
+  const loadQuestions = useCallback(async () => {
+    const dbQuestions = await getAllQuizQuestions()
+    const pageQuestions = dbQuestions.map(convertDBQuestionToPageFormat)
+    setAllQuestions(pageQuestions)
+  }, [])
+
+  // 页面显示时刷新答题次数和题目
   useDidShow(() => {
     const count = getDailyQuizCount()
     setDailyQuizCount(count)
+    loadQuestions()
   })
 
   // 开始答题
@@ -281,8 +110,18 @@ export default function Quiz() {
       return
     }
 
+    // 检查是否有题目
+    if (allQuestions.length === 0) {
+      Taro.showToast({
+        title: '题库为空，请先添加题目',
+        icon: 'none',
+        duration: 2000
+      })
+      return
+    }
+
     // 随机抽取5道题
-    const randomQuestions = getRandomQuestions()
+    const randomQuestions = getRandomQuestions(allQuestions)
     setCurrentQuestions(randomQuestions)
 
     setShowQuizModal(true)
@@ -371,8 +210,19 @@ export default function Quiz() {
       return
     }
 
+    // 检查是否有题目
+    if (allQuestions.length === 0) {
+      Taro.showToast({
+        title: '题库为空，请先添加题目',
+        icon: 'none',
+        duration: 2000
+      })
+      handleCloseModal()
+      return
+    }
+
     // 随机抽取新的5道题
-    const randomQuestions = getRandomQuestions()
+    const randomQuestions = getRandomQuestions(allQuestions)
     setCurrentQuestions(randomQuestions)
 
     setShowResult(false)
@@ -492,7 +342,7 @@ export default function Quiz() {
                         const records = Taro.getStorageSync('quizRecords') || []
                         if (records.length === 0) return 0
                         const totalCorrect = records.reduce((sum: number, r: any) => sum + r.correctCount, 0)
-                        const totalQuestions = records.length * QUIZ_QUESTIONS.length
+                        const totalQuestions = records.length * 5 // 每次答题5道题
                         return Math.round((totalCorrect / totalQuestions) * 100)
                       })()}%
                     </Text>

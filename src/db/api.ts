@@ -254,3 +254,111 @@ export async function addComment(
 
   return true
 }
+
+// ==================== 题库管理相关 ====================
+
+export interface QuizQuestion {
+  id: number
+  question: string
+  option_a: string
+  option_b: string
+  option_c: string
+  correct_answer: string
+  explanation: string | null
+  created_at: string
+  updated_at: string
+}
+
+/**
+ * 获取所有题目
+ */
+export async function getAllQuizQuestions(): Promise<QuizQuestion[]> {
+  const {data, error} = await supabase.from('quiz_questions').select('*').order('id', {ascending: true})
+
+  if (error) {
+    console.error('获取题目列表失败:', error)
+    return []
+  }
+
+  return data || []
+}
+
+/**
+ * 获取题目详情
+ */
+export async function getQuizQuestionById(id: number): Promise<QuizQuestion | null> {
+  const {data, error} = await supabase.from('quiz_questions').select('*').eq('id', id).single()
+
+  if (error) {
+    console.error('获取题目详情失败:', error)
+    return null
+  }
+
+  return data
+}
+
+/**
+ * 创建新题目
+ */
+export async function createQuizQuestion(
+  question: Omit<QuizQuestion, 'id' | 'created_at' | 'updated_at'>
+): Promise<QuizQuestion | null> {
+  const {data, error} = await supabase.from('quiz_questions').insert(question).select().single()
+
+  if (error) {
+    console.error('创建题目失败:', error)
+    return null
+  }
+
+  return data
+}
+
+/**
+ * 更新题目
+ */
+export async function updateQuizQuestion(
+  id: number,
+  question: Partial<Omit<QuizQuestion, 'id' | 'created_at' | 'updated_at'>>
+): Promise<boolean> {
+  const {error} = await supabase.from('quiz_questions').update(question).eq('id', id)
+
+  if (error) {
+    console.error('更新题目失败:', error)
+    return false
+  }
+
+  return true
+}
+
+/**
+ * 删除题目
+ */
+export async function deleteQuizQuestion(id: number): Promise<boolean> {
+  const {error} = await supabase.from('quiz_questions').delete().eq('id', id)
+
+  if (error) {
+    console.error('删除题目失败:', error)
+    return false
+  }
+
+  return true
+}
+
+// ==================== 内容管理相关 ====================
+
+/**
+ * 更新内容
+ */
+export async function updateContent(
+  id: string,
+  content: Partial<Omit<Content, 'id' | 'created_at'>>
+): Promise<boolean> {
+  const {error} = await supabase.from('contents').update(content).eq('id', id)
+
+  if (error) {
+    console.error('更新内容失败:', error)
+    return false
+  }
+
+  return true
+}

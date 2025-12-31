@@ -255,6 +255,19 @@ export default function My() {
             )}
           </View>
         </View>
+
+        {/* 内容管理入口 - 徽派红圆角样式 */}
+        <View className="px-4 py-6">
+          <Button
+            className="w-full bg-hui-red text-white py-4 rounded-xl font-bold text-lg break-keep shadow-lg"
+            size="default"
+            onClick={() => Taro.navigateTo({url: '/pages/admin/index'})}>
+            <View className="flex items-center justify-center">
+              <View className="i-mdi-cog text-2xl mr-2" />
+              <Text>内容管理</Text>
+            </View>
+          </Button>
+        </View>
       </ScrollView>
     </View>
   )

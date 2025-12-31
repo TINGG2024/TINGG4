@@ -6,7 +6,12 @@ const pages = [
   'pages/economy/index',
   'pages/detail/index',
   'pages/quiz/index',
-  'pages/my/index'
+  'pages/my/index',
+  'pages/admin/index',
+  'pages/admin/quiz/index',
+  'pages/admin/quiz/edit',
+  'pages/admin/content/index',
+  'pages/admin/content/edit'
 ]
 
 //  To fully leverage TypeScript's type safety and ensure its correctness, always enclose the configuration object within the global defineAppConfig helper function.
