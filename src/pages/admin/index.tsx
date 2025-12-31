@@ -41,20 +41,20 @@ export default function Admin() {
     <View className="min-h-screen bg-background">
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         {/* 徽派风格顶部 */}
-        <View className="bg-gradient-secondary px-6 pt-8 pb-12">
+        <View className="bg-huizhou-lattice px-6 pt-8 pb-12">
           {/* 返回按钮 */}
           <View className="mb-4">
             <View className="flex items-center w-20" onClick={() => Taro.navigateBack()}>
-              <View className="i-mdi-arrow-left text-2xl text-white mr-1" />
-              <Text className="text-base text-white">返回</Text>
+              <View className="i-mdi-arrow-left text-2xl text-huimo mr-1" />
+              <Text className="text-base text-huimo">返回</Text>
             </View>
           </View>
 
           {/* 标题区域 */}
           <View className="flex flex-col items-center">
-            <View className="i-mdi-cog text-5xl text-white mb-3" />
-            <Text className="text-2xl font-bold text-white mb-2">内容管理</Text>
-            <Text className="text-sm text-white text-opacity-90">全员可编辑 · 实时生效</Text>
+            <View className="i-mdi-cog text-5xl text-huimo mb-3" />
+            <Text className="text-2xl font-bold text-huimo mb-2">内容管理</Text>
+            <Text className="text-sm text-huimo-light">全员可编辑 · 实时生效</Text>
           </View>
         </View>
 

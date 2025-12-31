@@ -89,6 +89,36 @@
   .bg-gradient-huimo {
     background: var(--gradient-huimo);
   }
+
+  /* 徽州窗棂纹理背景 */
+  .bg-huizhou-lattice {
+    background-color: hsl(var(--hui-gray));
+    background-image: 
+      /* 横向窗棂 */
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 35px,
+        hsl(var(--huimo-light) / 0.08) 35px,
+        hsl(var(--huimo-light) / 0.08) 37px
+      ),
+      /* 竖向窗棂 */
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 35px,
+        hsl(var(--huimo-light) / 0.08) 35px,
+        hsl(var(--huimo-light) / 0.08) 37px
+      ),
+      /* 对角线纹理 */
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 70px,
+        hsl(var(--huimo-light) / 0.03) 70px,
+        hsl(var(--huimo-light) / 0.03) 71px
+      );
+  }
   
   .shadow-elegant {
     box-shadow: var(--shadow-elegant);
