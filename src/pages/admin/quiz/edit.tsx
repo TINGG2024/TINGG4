@@ -180,11 +180,11 @@ export default function QuizEdit() {
                 <View
                   key={option}
                   className={`flex-1 py-3 rounded-lg border-2 flex items-center justify-center ${
-                    correctAnswer === option ? 'border-primary bg-primary bg-opacity-10' : 'border-border bg-card'
+                    correctAnswer === option ? 'border-primary bg-primary' : 'border-border bg-card'
                   }`}
                   onClick={() => setCorrectAnswer(option)}>
                   <Text
-                    className={`text-base font-bold ${correctAnswer === option ? 'text-primary' : 'text-muted-foreground'}`}>
+                    className={`text-base font-bold ${correctAnswer === option ? 'text-white' : 'text-muted-foreground'}`}>
                     {option}
                   </Text>
                 </View>
