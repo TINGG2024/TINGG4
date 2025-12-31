@@ -1,5 +1,5 @@
 import {Image, ScrollView, Text, View} from '@tarojs/components'
-import Taro, {useDidShow, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
+import Taro, {useDidShow} from '@tarojs/taro'
 import {useCallback, useState} from 'react'
 import {getContentsByCategory} from '@/db/api'
 import type {Content} from '@/types/content'
@@ -18,15 +18,6 @@ export default function Scenery() {
   useDidShow(() => {
     loadData()
   })
-
-  useShareAppMessage(() => ({
-    title: '皖美 · 领略山水之美',
-    path: '/pages/scenery/index'
-  }))
-
-  useShareTimeline(() => ({
-    title: '皖美 · 领略山水之美'
-  }))
 
   const navigateToDetail = (id: string) => {
     Taro.navigateTo({url: `/pages/detail/index?id=${id}`})

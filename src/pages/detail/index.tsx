@@ -1,5 +1,5 @@
 import {Button, Image, ScrollView, Text, Textarea, View} from '@tarojs/components'
-import Taro, {getEnv, showToast, useDidShow, useRouter, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
+import Taro, {useDidShow, useRouter} from '@tarojs/taro'
 import {useCallback, useState} from 'react'
 import {
   addComment,
@@ -57,27 +57,6 @@ export default function Detail() {
   useDidShow(() => {
     loadData()
   })
-
-  // 分享配置
-  useShareAppMessage(() => ({
-    title: content ? `皖美 · ${content.title}` : '皖美',
-    path: `/pages/detail/index?id=${contentId}`
-  }))
-
-  useShareTimeline(() => ({
-    title: content ? `皖美 · ${content.title}` : '皖美'
-  }))
-
-  // 处理分享按钮点击（H5环境提示）
-  const handleShare = () => {
-    showToast({
-      title: '分享功能仅在微信小程序中可用',
-      icon: 'none',
-      duration: 2000
-    })
-  }
-
-  const isWeApp = getEnv() === 'WEAPP'
 
   // 点赞/取消点赞
   const handleLike = async () => {
@@ -292,14 +271,6 @@ export default function Detail() {
           <View className="i-mdi-comment-outline text-2xl text-muted-foreground" />
           <Text className="text-xs mt-1 text-muted-foreground">{content.comments_count}</Text>
         </View>
-
-        <Button
-          className="flex flex-col items-center bg-transparent border-none p-0 m-0 break-keep text-xs"
-          size="mini"
-          {...(isWeApp ? {openType: 'share'} : {onClick: handleShare})}>
-          <View className="i-mdi-share-variant text-2xl text-muted-foreground" />
-          <Text className="text-xs mt-1 text-muted-foreground">分享</Text>
-        </Button>
       </View>
     </View>
   )

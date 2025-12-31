@@ -1,5 +1,5 @@
 import {Button, Image, ScrollView, Text, View} from '@tarojs/components'
-import Taro, {getEnv, showToast, useDidShow, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
+import Taro, {useDidShow} from '@tarojs/taro'
 import {useState} from 'react'
 
 // 题库配置
@@ -268,44 +268,6 @@ export default function Quiz() {
     const count = getDailyQuizCount()
     setDailyQuizCount(count)
   })
-
-  // 分享配置
-  useShareAppMessage(() => {
-    if (showResult && currentQuestions.length > 0) {
-      const accuracy = Math.round((correctCount / currentQuestions.length) * 100)
-      return {
-        title: `我在徽派文化小问答中答对了${correctCount}题，正确率${accuracy}%！你也来挑战吧`,
-        path: '/pages/quiz/index'
-      }
-    }
-    return {
-      title: '徽派文化小问答 · 测测你对安徽文化的了解',
-      path: '/pages/quiz/index'
-    }
-  })
-
-  useShareTimeline(() => {
-    if (showResult && currentQuestions.length > 0) {
-      const accuracy = Math.round((correctCount / currentQuestions.length) * 100)
-      return {
-        title: `我在徽派文化小问答中答对了${correctCount}题，正确率${accuracy}%！`
-      }
-    }
-    return {
-      title: '徽派文化小问答 · 测测你对安徽文化的了解'
-    }
-  })
-
-  // 处理分享按钮点击（H5环境提示）
-  const handleShare = () => {
-    showToast({
-      title: '分享功能仅在微信小程序中可用',
-      icon: 'none',
-      duration: 2000
-    })
-  }
-
-  const isWeApp = getEnv() === 'WEAPP'
 
   // 开始答题
   const handleStartQuiz = () => {
@@ -696,7 +658,7 @@ export default function Quiz() {
                     )}
 
                     {/* 按钮 */}
-                    <View className="flex w-full space-x-3 mb-4">
+                    <View className="flex w-full space-x-3">
                       <Button
                         className="flex-1 bg-muted text-muted-foreground py-3 rounded-lg break-keep text-base"
                         size="default"
@@ -710,15 +672,6 @@ export default function Quiz() {
                         再来一次
                       </Button>
                     </View>
-
-                    {/* 分享按钮 */}
-                    <Button
-                      className="w-full bg-gradient-primary text-white py-3 rounded-lg flex items-center justify-center break-keep text-base"
-                      size="default"
-                      {...(isWeApp ? {openType: 'share'} : {onClick: handleShare})}>
-                      <View className="i-mdi-share-variant text-xl mr-2" />
-                      <Text>分享我的成绩</Text>
-                    </Button>
                   </View>
                 </>
               )}

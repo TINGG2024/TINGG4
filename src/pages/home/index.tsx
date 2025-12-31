@@ -1,5 +1,5 @@
 import {Image, ScrollView, Text, View} from '@tarojs/components'
-import Taro, {useDidShow, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
+import Taro, {useDidShow} from '@tarojs/taro'
 import {useCallback, useEffect, useState} from 'react'
 import {getAllContents} from '@/db/api'
 import {useUserStore} from '@/store/user'
@@ -72,16 +72,6 @@ export default function Home() {
     }, 3000)
     return () => clearInterval(timer)
   }, [])
-
-  // 分享配置
-  useShareAppMessage(() => ({
-    title: '皖美视界 · 一脚踏进徽州，一眼看尽江淮',
-    path: '/pages/home/index'
-  }))
-
-  useShareTimeline(() => ({
-    title: '皖美视界 · 一脚踏进徽州，一眼看尽江淮'
-  }))
 
   // 跳转到详情页
   const navigateToDetail = (id: string) => {

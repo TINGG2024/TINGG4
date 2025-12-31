@@ -1,5 +1,5 @@
 import {Button, Image, Input, ScrollView, Text, View} from '@tarojs/components'
-import Taro, {getEnv, showToast, useDidShow, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
+import Taro, {useDidShow} from '@tarojs/taro'
 import {useCallback, useState} from 'react'
 import {getUserFavorites} from '@/db/api'
 import {useUserStore} from '@/store/user'
@@ -34,26 +34,6 @@ export default function My() {
     loadData()
   })
 
-  useShareAppMessage(() => ({
-    title: `我在皖美视界收藏了${favorites.length}个内容，获得了${badges.length}枚印章！`,
-    path: '/pages/home/index'
-  }))
-
-  useShareTimeline(() => ({
-    title: `我在皖美视界收藏了${favorites.length}个内容，获得了${badges.length}枚印章！`
-  }))
-
-  // 处理分享按钮点击（H5环境提示）
-  const handleShare = () => {
-    showToast({
-      title: '分享功能仅在微信小程序中可用',
-      icon: 'none',
-      duration: 2000
-    })
-  }
-
-  const isWeApp = getEnv() === 'WEAPP'
-
   const navigateToDetail = (id: string) => {
     Taro.navigateTo({url: `/pages/detail/index?id=${id}`})
   }
@@ -83,18 +63,7 @@ export default function My() {
     <View className="min-h-screen bg-background">
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         {/* 徽派风格顶部 */}
-        <View className="my-header-hui px-6 pt-8 pb-6 relative">
-          {/* 右上角分享按钮 */}
-          <View className="absolute top-4 right-4 z-20">
-            <Button
-              className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-3 py-1.5 rounded-full flex items-center break-keep text-xs"
-              size="mini"
-              {...(isWeApp ? {openType: 'share'} : {onClick: handleShare})}>
-              <View className="i-mdi-share-variant text-base mr-1" />
-              <Text>分享</Text>
-            </Button>
-          </View>
-
+        <View className="my-header-hui px-6 pt-8 pb-6">
           <View className="relative z-10">
             <View className="flex items-center mb-6">
               {/* 徽派印章头像 */}

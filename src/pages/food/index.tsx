@@ -1,5 +1,5 @@
 import {Image, ScrollView, Text, View} from '@tarojs/components'
-import Taro, {useDidShow, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
+import Taro, {useDidShow} from '@tarojs/taro'
 import {useCallback, useState} from 'react'
 import {getContentsByCategory} from '@/db/api'
 import type {Content} from '@/types/content'
@@ -18,15 +18,6 @@ export default function Food() {
   useDidShow(() => {
     loadData()
   })
-
-  useShareAppMessage(() => ({
-    title: '皖美 · 品味徽州美食',
-    path: '/pages/food/index'
-  }))
-
-  useShareTimeline(() => ({
-    title: '皖美 · 品味徽州美食'
-  }))
 
   const navigateToDetail = (id: string) => {
     Taro.navigateTo({url: `/pages/detail/index?id=${id}`})

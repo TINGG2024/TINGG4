@@ -1,5 +1,5 @@
 import {Image, ScrollView, Text, View} from '@tarojs/components'
-import Taro, {useDidShow, useShareAppMessage, useShareTimeline} from '@tarojs/taro'
+import Taro, {useDidShow} from '@tarojs/taro'
 import {useCallback, useState} from 'react'
 import {getContentsByCategory} from '@/db/api'
 import type {Content} from '@/types/content'
@@ -18,15 +18,6 @@ export default function Culture() {
   useDidShow(() => {
     loadData()
   })
-
-  useShareAppMessage(() => ({
-    title: '皖美 · 感受文化底蕴',
-    path: '/pages/culture/index'
-  }))
-
-  useShareTimeline(() => ({
-    title: '皖美 · 感受文化底蕴'
-  }))
 
   const navigateToDetail = (id: string) => {
     Taro.navigateTo({url: `/pages/detail/index?id=${id}`})
