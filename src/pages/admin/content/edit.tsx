@@ -83,6 +83,14 @@ export default function ContentEdit() {
     <View className="min-h-screen bg-background">
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         <View className="px-4 py-6">
+          {/* 返回按钮 */}
+          <View className="mb-6">
+            <View className="flex items-center w-20" onClick={() => Taro.navigateBack()}>
+              <View className="i-mdi-arrow-left text-2xl text-primary mr-1" />
+              <Text className="text-base text-primary">返回</Text>
+            </View>
+          </View>
+
           {/* 图片预览 */}
           {imageUrl && (
             <View className="mb-6">

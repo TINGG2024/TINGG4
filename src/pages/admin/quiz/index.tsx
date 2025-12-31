@@ -59,6 +59,15 @@ export default function QuizManagement() {
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         {/* 顶部操作栏 */}
         <View className="bg-card border-b border-border px-4 py-3">
+          {/* 返回按钮 */}
+          <View className="mb-3">
+            <View className="flex items-center w-20" onClick={() => Taro.navigateBack()}>
+              <View className="i-mdi-arrow-left text-2xl text-primary mr-1" />
+              <Text className="text-base text-primary">返回</Text>
+            </View>
+          </View>
+
+          {/* 新增按钮 */}
           <Button
             className="w-full bg-primary text-white py-3 rounded-lg break-keep text-base font-bold"
             size="default"

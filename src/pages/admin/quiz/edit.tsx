@@ -101,6 +101,14 @@ export default function QuizEdit() {
     <View className="min-h-screen bg-background">
       <ScrollView scrollY style={{height: '100vh', background: 'transparent'}}>
         <View className="px-4 py-6">
+          {/* 返回按钮 */}
+          <View className="mb-6">
+            <View className="flex items-center w-20" onClick={() => Taro.navigateBack()}>
+              <View className="i-mdi-arrow-left text-2xl text-primary mr-1" />
+              <Text className="text-base text-primary">返回</Text>
+            </View>
+          </View>
+
           {/* 题干 */}
           <View className="mb-6">
             <Text className="text-sm text-foreground font-semibold mb-2 block">

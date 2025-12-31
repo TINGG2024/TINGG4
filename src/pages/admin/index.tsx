@@ -68,16 +68,12 @@ export default function Admin() {
                 onClick={() => handleNavigate(module.path)}>
                 <View className="flex items-center">
                   {/* 图标 */}
-                  <View className="w-14 h-14 bg-primary bg-opacity-10 rounded-xl flex items-center justify-center mr-4">
-                    <View className={`${module.icon} text-3xl text-primary`} />
-                  </View>
 
                   {/* 内容 */}
                   <View className="flex-1">
                     <Text className="text-lg font-bold text-foreground block mb-1 break-keep">{module.title}</Text>
                     <Text className="text-sm text-muted-foreground break-keep">{module.description}</Text>
                   </View>
-
                   {/* 箭头 */}
                   <View className="i-mdi-chevron-right text-2xl text-muted-foreground" />
                 </View>
