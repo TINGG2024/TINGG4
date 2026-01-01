@@ -29,17 +29,9 @@ const CATEGORIES = [
   }
 ]
 
-// 地域专题轮播图
-const SPECIAL_IMAGES = [
-  'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_537fad72-237f-47d3-a771-91243bfeb5d5.jpg', // 宏村
-  'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_27e08092-b8c3-4631-94f3-88b1201a8e57.jpg', // 西递
-  'https://miaoda-site-img.cdn.bcebos.com/images/baidu_image_search_e16d3678-3967-4023-86a2-01aafcc2112b.jpg' // 呈坎
-]
-
 export default function Home() {
   const [contents, setContents] = useState<Content[]>([])
   const [loading, setLoading] = useState(true)
-  const [specialImageIndex, setSpecialImageIndex] = useState(0)
   const [mounted, setMounted] = useState(false)
 
   // 延迟初始化 store，避免 React 上下文未准备好的问题
@@ -77,14 +69,6 @@ export default function Home() {
     loadContents()
   }, [loadContents])
 
-  // 专题区轮播
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSpecialImageIndex((prev) => (prev + 1) % SPECIAL_IMAGES.length)
-    }, 3000)
-    return () => clearInterval(timer)
-  }, [])
-
   // 跳转到详情页
   const navigateToDetail = (id: string) => {
     Taro.navigateTo({url: `/pages/detail/index?id=${id}`})
@@ -103,7 +87,6 @@ export default function Home() {
   const foodContents = contents.filter((c) => c.category === 'food')
   const sceneryContents = contents.filter((c) => c.category === 'scenery')
   const cultureContents = contents.filter((c) => c.category === 'culture')
-  const economyContents = contents.filter((c) => c.category === 'economy')
 
   return (
     <View className="min-h-screen bg-background">
@@ -294,94 +277,9 @@ export default function Home() {
               </View>
             </View>
           )}
-
-          {/* 经济发展 */}
-          {economyContents.length > 0 && (
-            <View className="mb-6">
-              <View className="flex items-center justify-between mb-4">
-                <Text className="text-lg font-bold text-huimo">经济发展</Text>
-                <Text className="text-xs text-huimo-light">见证发展成就</Text>
-              </View>
-              <View className="flex flex-wrap justify-between">
-                {economyContents.map((content) => (
-                  <View
-                    key={content.id}
-                    className="w-[48%] mb-3 bg-card rounded-xl shadow-card overflow-hidden card-scale"
-                    onClick={() => navigateToDetail(content.id)}>
-                    <View className="w-full" style={{paddingTop: '66.67%', position: 'relative'}}>
-                      <Image
-                        src={content.image_url || 'https://via.placeholder.com/300x200'}
-                        mode="aspectFill"
-                        className="absolute inset-0 w-full h-full"
-                      />
-                    </View>
-                    <View className="p-3">
-                      <Text className="text-sm font-bold text-foreground block mb-1 break-keep line-clamp-1">
-                        {content.title}
-                      </Text>
-                      <Text
-                        className="text-xs text-muted-foreground block mb-2 line-clamp-2"
-                        style={{lineHeight: '1.5'}}>
-                        {content.description.slice(0, 30)}...
-                      </Text>
-                      <View className="flex items-center justify-between">
-                        <View className="flex items-center text-xs text-muted-foreground">
-                          <View className="i-mdi-thumb-up-outline text-sm mr-1" />
-                          <Text>{content.likes_count}</Text>
-                        </View>
-                        <View className="flex items-center text-xs text-hui-red">
-                          <Text className="mr-1">查看详情</Text>
-                          <View className="i-mdi-chevron-right text-sm" />
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                ))}
-              </View>
-            </View>
-          )}
         </View>
 
-        {/* 4. 地域专题区（通栏模块） */}
-        <View className="mx-4 mb-5 bg-card rounded-xl shadow-card overflow-hidden">
-          <View className="flex">
-            {/* 左侧文字区（40%） */}
-            <View className="w-[40%] p-4 flex flex-col justify-center bg-gradient-subtle">
-              <Text className="text-base font-bold text-huimo block mb-2">徽州古村专题</Text>
-              <Text className="text-xs text-huimo-light block mb-3" style={{lineHeight: '1.5'}}>
-                探访宏村、西递、呈坎，感受徽派建筑的独特魅力
-              </Text>
-              <View
-                className="inline-flex items-center text-xs text-hui-red"
-                onClick={() => navigateToCategory('culture')}>
-                <Text className="mr-1">进入专题</Text>
-                <View className="i-mdi-arrow-right text-sm" />
-              </View>
-            </View>
-            {/* 右侧轮播图（60%） */}
-            <View className="w-[60%] relative" style={{height: '150px'}}>
-              {SPECIAL_IMAGES.map((img, index) => (
-                <View
-                  key={index}
-                  className="absolute inset-0 transition-opacity duration-500"
-                  style={{opacity: index === specialImageIndex ? 1 : 0}}>
-                  <Image src={img} mode="aspectFill" className="w-full h-full" />
-                </View>
-              ))}
-              {/* 轮播指示器 */}
-              <View className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center">
-                {SPECIAL_IMAGES.map((_, index) => (
-                  <View
-                    key={index}
-                    className={`w-1.5 h-1.5 rounded-full mx-1 ${index === specialImageIndex ? 'bg-white' : 'bg-white opacity-50'}`}
-                  />
-                ))}
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* 5. 底部轻量推荐区 */}
+        {/* 4. 底部轻量推荐区 */}
         <View className="px-4 pb-6">
           <View className="flex justify-between"></View>
         </View>
