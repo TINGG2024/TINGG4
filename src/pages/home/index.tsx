@@ -40,11 +40,23 @@ export default function Home() {
   const [contents, setContents] = useState<Content[]>([])
   const [loading, setLoading] = useState(true)
   const [specialImageIndex, setSpecialImageIndex] = useState(0)
-  const initUser = useUserStore((state) => state.initUser)
+  const [mounted, setMounted] = useState(false)
 
-  // 初始化用户
+  // 延迟初始化 store，避免 React 上下文未准备好的问题
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // 初始化用户 - 只在组件挂载后执行
   useDidShow(() => {
-    initUser()
+    if (mounted) {
+      try {
+        const initUser = useUserStore.getState().initUser
+        initUser()
+      } catch (error) {
+        console.error('初始化用户失败:', error)
+      }
+    }
   })
 
   // 加载内容数据

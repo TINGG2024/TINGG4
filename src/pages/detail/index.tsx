@@ -26,12 +26,19 @@ export default function Detail() {
   const [commentText, setCommentText] = useState('')
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
-
-  const userId = useUserStore((state) => state.userId)
-  const nickname = useUserStore((state) => state.nickname)
+  const [userId, setUserId] = useState('')
+  const [nickname, setNickname] = useState('游客')
 
   const loadData = useCallback(async () => {
     if (!contentId) return
+
+    // 从 store 获取用户信息
+    const userStore = useUserStore.getState()
+    const currentUserId = userStore.userId
+    const currentNickname = userStore.nickname
+
+    setUserId(currentUserId)
+    setNickname(currentNickname)
 
     setLoading(true)
 
@@ -44,15 +51,15 @@ export default function Detail() {
     setComments(commentsData)
 
     // 检查点赞和收藏状态
-    if (userId) {
-      const liked = await checkUserLiked(contentId, userId)
-      const favorited = await checkUserFavorited(contentId, userId)
+    if (currentUserId) {
+      const liked = await checkUserLiked(contentId, currentUserId)
+      const favorited = await checkUserFavorited(contentId, currentUserId)
       setIsLiked(liked)
       setIsFavorited(favorited)
     }
 
     setLoading(false)
-  }, [contentId, userId])
+  }, [contentId])
 
   useDidShow(() => {
     loadData()

@@ -11,16 +11,22 @@ export default function My() {
   const [editingNickname, setEditingNickname] = useState(false)
   const [tempNickname, setTempNickname] = useState('')
   const [badges, setBadges] = useState<string[]>([])
-
-  const userId = useUserStore((state) => state.userId)
-  const nickname = useUserStore((state) => state.nickname)
-  const setNickname = useUserStore((state) => state.setNickname)
+  const [userId, setUserId] = useState('')
+  const [nickname, setNicknameState] = useState('游客')
 
   const loadData = useCallback(async () => {
-    if (!userId) return
+    // 从 store 获取用户信息
+    const userStore = useUserStore.getState()
+    const currentUserId = userStore.userId
+    const currentNickname = userStore.nickname
+
+    setUserId(currentUserId)
+    setNicknameState(currentNickname)
+
+    if (!currentUserId) return
 
     setLoading(true)
-    const data = await getUserFavorites(userId)
+    const data = await getUserFavorites(currentUserId)
     setFavorites(data)
 
     // 加载印章数据
@@ -28,7 +34,7 @@ export default function My() {
     setBadges(badgesData)
 
     setLoading(false)
-  }, [userId])
+  }, [])
 
   useDidShow(() => {
     loadData()
@@ -49,7 +55,11 @@ export default function My() {
       return
     }
 
-    setNickname(tempNickname.trim())
+    // 更新 store 和本地状态
+    const userStore = useUserStore.getState()
+    userStore.setNickname(tempNickname.trim())
+    setNicknameState(tempNickname.trim())
+
     setEditingNickname(false)
     Taro.showToast({title: '昵称已更新', icon: 'success'})
   }
